@@ -1,27 +1,18 @@
 import React, { useState } from "react";
-import "./assets/css/App.css";
 import NavigationBar from "./components/NavigationBar";
 import MainPage from "./components/MainPage";
+import Footer from "./components/Footer";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import RegistrationPage from "./components/RegistrationPage";
+import SignUpPage from "./components/SignUpPage";
+import LoginPage from "./components/LoginPage";
+import MarketPage from "./components/MarketPage";
 
 const App: React.FC = () => {
-  // State to hold the h1 text
-  const [text, setText] = useState("hello world");
-
-  // Function to change the h1 text
-  const changeText = () => {
-    if (text == "new text") {
-      setText("hello world");
-      return;
-    }
-    setText("new text");
-  };
 
   return (
     <Router>
@@ -32,16 +23,13 @@ const App: React.FC = () => {
             <>
               <NavigationBar />
               <MainPage />
-              <main>
-                <h1>{text}</h1>
-                <button className="expandButton" onClick={changeText}>
-                  Change Text
-                </button>
-              </main>
+              <Footer />
             </>
           }
         />
-        <Route path="/Registration" element={<RegistrationPage />} />
+        <Route path="/SignUp" element={<SignUpPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/Market" element={<MarketPage />} />
       </Routes>
     </Router>
   );

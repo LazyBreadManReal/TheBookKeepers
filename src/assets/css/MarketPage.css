@@ -1,0 +1,48 @@
+.market-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.market-page-title {
+    color: #512b2b;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.market-page-listings {
+    width: 80%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.listing-item {
+    display: flex;
+    margin: 1%;
+    width: 18%;
+    height: 240px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #512b2b;
+    border-radius: 4px;
+}
+
+.listing-img {
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.listing-img img {
+    max-height: 100%;
+}
+
+.listing-description {
+    height: 30%;
+}

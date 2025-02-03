@@ -1,0 +1,191 @@
+.login-page {
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+  box-sizing: border-box;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("../images/goats/goat1.png");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.login-bubble-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  animation: blur 1s;
+}
+
+.login-bubble {
+  background: #ffffff;
+  border-radius: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  overflow: hidden;
+  width: 1000px;
+  max-width: 90%;
+  height: 575px;
+}
+
+.login-section {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.login-logo img {
+  max-width: 100px;
+  margin-bottom: 10px;
+}
+
+.login-page h2 {
+  margin: 10px 0;
+  color: #512b2b;
+  font-size: 17px;
+}
+
+.login-page h1 {
+  margin: 10px 0;
+  font-size: 30px;
+}
+
+.login-page p {
+  color: #000000;
+}
+
+.login-social-icons {
+  margin: 7.5px 0;
+}
+
+.login-social-icons a {
+  border: 10px solid #ffffff;
+  border-radius: 25%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+  width: 40px;
+  height: 40px;
+  font-size: 30px;
+  color: #512b2b;
+}
+
+.login-divider {
+  margin: 5px 0;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.login-page form {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-page form input {
+  width: 75%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.login-page form .login-btn {
+  padding: 10px;
+  background-color: #512b2b;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-signup-section {
+  background: linear-gradient(135deg, #ffffff, #512b2b);
+  flex: 0.8;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #333;
+}
+
+.login-signup-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.login-signup-section p {
+  margin-bottom: 20px;
+}
+
+.login-signup-section .login-signup-btn {
+  padding: 10px 20px;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #333;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .login-bubble {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .login-signup-section {
+    flex: 1;
+  }
+}
+
+.login-pop-up {
+  width: 30%;
+  height: 30%;
+  color: white;
+  text-align: center;
+  display: flex;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  background-color: #512b2b;
+  padding: 30px;
+  border-radius: 10px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.login-pop-up p {
+  color: wheat;
+}
+
+.login-pop-up-hidden {
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+}
+
+
+
+@keyframes blur {
+  from {
+    transform: scale(1.1);
+    filter: blur(10px);
+  }
+  to {
+    transform: scale(1);
+    filter: blur(0px);
+  }
+}

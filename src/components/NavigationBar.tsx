@@ -13,35 +13,11 @@ const NavigationBar: React.FC = () => {
         <nav>
             <ul>
                 <li className="nav-about"><a href="#about-pcshs">About</a></li>
-                <li><Link to="/Registration">Login</Link></li>
+                <li><Link to="/SignUp">Login</Link></li>
                 <li><a >Contact</a></li>
-                <li className="nav-announcements">
-                    <a href="announcements.html">Announcements</a>
-                    <div className="nav-announcements-window">
-                        <a href="">General</a>
-                        <a href="">Grade 7</a>
-                        <a href="">Grade 8</a>
-                        <a href="">Grade 9</a>
-                        <a href="">Grade 10</a>
-                        <a href="">Grade 11</a>
-                        <a href="">Grade 12</a>
-                    </div>
-                </li>
-                <li className="nav-activities">
-                    <a href="activities.html">Activities</a>
-                    <div className="nav-activities-window">
-                        <a href="">General</a>
-                        <a href="">Grade 7</a>
-                        <a href="">Grade 8</a>
-                        <a href="">Grade 9</a>
-                        <a href="">Grade 10</a>
-                        <a href="">Grade 11</a>
-                        <a href="">Grade 12</a>
-                    </div>
-                </li>
                 <li><a href="#event-summary-section">Events</a></li>
                 <li><a href="">Calendar</a></li>
-                <li><a href="goats.html">Goats</a></li>
+                <li><a href="/Market">Goats</a></li>
             </ul>
         </nav> 
     </div>
