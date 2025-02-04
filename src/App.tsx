@@ -11,6 +11,7 @@ import {
 import SignUpPage from "./components/SignUpPage";
 import LoginPage from "./components/LoginPage";
 import MarketPage from "./components/MarketPage";
+import CreateListingPage from "./components/CreateListingPage";
 
 const App: React.FC = () => {
 
@@ -30,6 +31,7 @@ const App: React.FC = () => {
         <Route path="/SignUp" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/Market" element={<MarketPage />} />
+        <Route path="/NewListing" element={<CreateListingPage />} />
       </Routes>
     </Router>
   );
