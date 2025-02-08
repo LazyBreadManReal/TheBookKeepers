@@ -2,16 +2,18 @@ const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
 const multer = require('multer');
-
+const fs = require('fs');
+const path = require('path');
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-    host: 'localhost',  // Change this to your database host
-    user: 'root',       // Change this to your database username
-    password: 'jmgaming1011',       // Change this to your database password
-    database: 'goatwebsite' // Replace with your database name
+    host: 'localhost',
+    user: 'root',
+    password: 'jmgaming1011',
+    database: 'goatwebsite'
 });
 
 db.connect((err) => {
@@ -20,12 +22,27 @@ db.connect((err) => {
         return;
     }
     console.log('Connected to MySQL database');
+
+    //ensure listings table exists
+    db.query("SELECT * FROM listings", (err, results) => {
+        if (err) {
+            if(err.code == "ER_NO_SUCH_TABLE") {
+                CreateTableQuery = "create table listings (id int key auto_increment, listing_name varchar(255), listing_email varchar(255), price int, location varchar(255), description text)";
+                db.query(CreateTableQuery, (err, results) => {
+                    if(err){
+                        console.error("DATABASE ERROR: listings table Initialized failed");
+                    }
+                    console.log("DATABASE: TABLE listings Initialized")
+                })
+            }
+        }
+    });
 });
 
-const storage = multer.diskStorage({
+const listing_images_folder = multer.diskStorage({
     destination: (req, file, cb) => {
         const listingId = req.params.listingId;
-        const uploadPath = path.join(__dirname, 'public', 'listing_images', listingId);
+        const uploadPath = path.join(path.dirname(__dirname), 'listing_images', listingId);
 
         
         if (!fs.existsSync(uploadPath)) {
@@ -39,10 +56,10 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage });
+const upload_listing_image = multer({ listing_images_folder });
 
 
-app.post('/api/upload-images/:listingId', upload.array('images', 10), (req, res) => {
+app.post('/api/upload-images/:listingId', upload_listing_image.array('images', 10), (req, res) => {
     if (!req.files || req.files.length === 0) {
         return res.status(400).json({ error: 'No files uploaded' });
     }
@@ -72,24 +89,14 @@ app.post('/api/add-listing', (req, res) => {
     }
 
 
-    const query = "INSERT INTO listings (listing_name, listing_email, price, location, description, image_folder_path) VALUES (?, ?, ?, ?, ?, ?)";
-    db.query(query, [listing_name, listing_email, price, location, description, ""], (err, result) => {
+    const query = "INSERT INTO listings (listing_name, listing_email, price, location, description) VALUES (?, ?, ?, ?, ?)";
+    db.query(query, [listing_name, listing_email, price, location, description], (err, result) => {
         if (err) {
             console.error('Error inserting listing:', err);
             return res.status(500).json({ error: 'Database insert error' });
         }
-
         const listingId = result.insertId;
-        const imageFolderPath = `/public/listing_images/${listingId}/`;
-
-        const updateQuery = "UPDATE listings SET image_folder_path = ? WHERE id = ?";
-        db.query(updateQuery, [imageFolderPath, listingId], (err) => {
-            if (err) {
-                console.error('Error updating image folder path:', err);
-                return res.status(500).json({ error: 'Database update error' });
-            }
-            return res.status(201).json({ message: 'Listing added successfully', listingId, imageFolderPath });
-        });
+        return res.status(201).json({ message: 'Listing added successfully', listingId });
     });
 });
 

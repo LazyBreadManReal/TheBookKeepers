@@ -13,30 +13,25 @@ const CreateListingPage: React.FC = () => {
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle file selection
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setSelectedFiles(e.target.files);
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      // Step 1: Create a new listing
       const response = await axios.post("http://localhost:5000/api/add-listing", formData);
 
       if (response.data.listingId) {
         const listingId = response.data.listingId;
 
-        // Step 2: Upload images if selected
         if (selectedFiles) {
           const imageFormData = new FormData();
           Array.from(selectedFiles).forEach((file) => imageFormData.append("images", file));
@@ -68,8 +63,8 @@ const CreateListingPage: React.FC = () => {
         <input type="number" name="price" placeholder="Price" value={formData.price} onChange={handleChange} className="" required />
         <input type="text" name="location" placeholder="Location" value={formData.location} onChange={handleChange} className="" required />
         <textarea name="description" placeholder="Description" value={formData.description} onChange={handleChange} className="" required></textarea>
+        <input type="file" name="images" multiple onChange={handleFileChange} />
         {/* File input for images */}
-        <input type="file" multiple onChange={handleFileChange} className="" />
 
         <button type="submit" className="">Submit Listing</button>
       </form>
