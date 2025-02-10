@@ -39,11 +39,13 @@ db.connect((err) => {
     });
 });
 
+const getUploadPathListingImages = (listingId) => path.join(path.dirname(__dirname), 'listing_images', listingId);
+
+
 const listing_images_folder = multer.diskStorage({
     destination: (req, file, cb) => {
         const listingId = req.params.listingId;
-        const uploadPath = path.join(path.dirname(__dirname), 'listing_images', listingId);
-
+        const uploadPath = getUploadPathListingImages(listingId);
         
         if (!fs.existsSync(uploadPath)) {
             fs.mkdirSync(uploadPath, { recursive: true });
@@ -56,7 +58,7 @@ const listing_images_folder = multer.diskStorage({
     }
 });
 
-const upload_listing_image = multer({ listing_images_folder });
+const upload_listing_image = multer({ storage: listing_images_folder });
 
 
 app.post('/api/upload-images/:listingId', upload_listing_image.array('images', 10), (req, res) => {
@@ -100,6 +102,23 @@ app.post('/api/add-listing', (req, res) => {
     });
 });
 
+app.get('/api/get-listing-images/:listingId', (req, res) => {
+    const listingId = req.params.listingId;
+    const listingPath = getUploadPathListingImages(listingId);
+
+    if (!fs.existsSync(listingPath)) {
+        return res.json({ images: [] });
+    }
+
+    fs.readdir(listingPath, (err, files) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error reading image directory' });
+        }
+
+        const imagePaths = files.map(file => `/public/listing_images/${listingId}/${file}`);
+        res.json({ images: imagePaths });
+    });
+});
 
 app.listen(5000, ()=> {
     console.log('Server is running on port 5000');

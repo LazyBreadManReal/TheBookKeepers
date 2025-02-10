@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 const NavigationBar: React.FC = () => {
   return (
     <div className="nav-menu">
+      <div className="menu-container">
         <header>
             <h1>Goat Website</h1>
         </header>
@@ -20,6 +21,7 @@ const NavigationBar: React.FC = () => {
                 <li><a href="/Market">Goats</a></li>
             </ul>
         </nav> 
+      </div>
     </div>
   );
 };

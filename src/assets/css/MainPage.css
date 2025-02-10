@@ -16,20 +16,20 @@
     position: absolute;
     width: 40%;
     height: 400px;
-    border: 2px solid #800000; /* Maroon border */
     border-radius: 8px; /* Slight rounding of borders */
     padding: 20px;
-    background: rgba(255, 255, 255, 0.8);
+    background: linear-gradient(225deg, #ffffff, #c53417c0);
     align-self: center;
     justify-self: flex-end;
 }
 
 .about-us h1 {
-    color: #800000;
+    color: #ffffff;
 }
 
 .about-us p {
     font-size: 1.2em;
+    color: white;
 }
 
 .about-us-section img {
