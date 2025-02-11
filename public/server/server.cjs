@@ -4,6 +4,7 @@ const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+const bcrypt = require('bcrypt');
 const app = express();
 
 app.use(cors());
@@ -33,6 +34,19 @@ db.connect((err) => {
                         console.error("DATABASE ERROR: listings table Initialized failed");
                     }
                     console.log("DATABASE: TABLE listings Initialized")
+                })
+            }
+        }
+    });
+    db.query("SELECT * FROM users", (err, results) => {
+        if (err) {
+            if(err.code == "ER_NO_SUCH_TABLE") {
+                CreateTableQuery = "create table users (id int key auto_increment, username varchar(255), email varchar(255), password varchar(255))";
+                db.query(CreateTableQuery, (err, results) => {
+                    if(err){
+                        console.error("DATABASE ERROR: users table Initialized failed");
+                    }
+                    console.log("DATABASE: TABLE users Initialized")
                 })
             }
         }
@@ -119,6 +133,61 @@ app.get('/api/get-listing-images/:listingId', (req, res) => {
         res.json({ images: imagePaths });
     });
 });
+
+
+const saltRounds = 10; // Number of hashing rounds
+
+async function hashPassword(plainPassword) {
+    const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
+    return hashedPassword;
+}
+
+app.post("/api/register", async (req, res) => {
+    const {username, email, password} = req.body;
+
+    if(!username | !email | !password) {
+        return res.status(400).json({ message: "All fields are required"});
+    }
+
+    try {
+        const hashedPassword = await hashPassword(password)
+
+        const query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)"
+        db.query(query, [username, email, hashedPassword], (err, result) => {
+            if(err) {
+                return res.status(500).json({ error: 'Error registering user' });
+            }
+            
+            res.status(201).json({ message: "User registered successfully" });
+        })
+    } catch(error) {
+        res.status(500).json({ message: "Error hashing password" });
+    }
+
+});
+
+app.post("/api/login", async (req, res) => {
+    const { email, password } = req.body;
+
+    const sql = "SELECT password FROM users WHERE email = ?";
+    db.query(sql, [username], async (err, results) => {
+        if (err || results.length === 0) {
+            return res.status(401).json({ message: "Invalid username or password" });
+        }
+
+        const hashedPassword = results[0].password;
+        const isMatch = await bcrypt.compare(password, hashedPassword);
+
+        if (isMatch) {
+            res.json({ message: "Login successful" });
+        } else {
+            res.status(401).json({ message: "Invalid username or password" });
+        }
+    });
+
+    connection.end();
+});
+
 
 app.listen(5000, ()=> {
     console.log('Server is running on port 5000');
