@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import "../assets/css/SignUpPage.css";
+import "../assets/css/LoginPage.css";
 import GoogleIcon from "../assets/images/google-icon.png"
 import FacebookIcon from "../assets/images/facebook-icon.png"
 import InstagramIcon from "../assets/images/instagram-icon.png"
 
-const SignUpPage: React.FC = () => {
+const LoginPage: React.FC = () => {
   const RedirectToSignUp = () => {
     window.location.href = 'http://localhost:5173/signup';
   };
@@ -60,4 +60,4 @@ const SignUpPage: React.FC = () => {
   );
 };
 
-export default SignUpPage;
+export default LoginPage;
