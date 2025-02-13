@@ -1,8 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "../assets/css/MainPage.css";
-import goatImage from "../assets/images/goats/goat.png"
+import goatImage from "../assets/images/goats/goat.png";
 
 const Navbar: React.FC = () => {
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchProtectedData = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        console.log("No token found in localStorage.");
+        return;
+      }
+
+      try {
+        const response = await axios.get("http://localhost:5000/api/protected-route", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Ensure 'Bearer' prefix is included
+          },
+        });        
+
+        console.log("Protected Route Response:", response.data);
+        setUserData(response.data.user); // Save user data from response
+      } catch (error) {
+        console.error("Error accessing protected route:", error);
+      }
+    };
+
+    fetchProtectedData();
+  }, []);
+
   return (
     <div className="content">
       <div className="about-us-section">
