@@ -190,6 +190,27 @@ app.post("/api/login", async (req, res) => {
     });
 });
 
+app.get("/api/check-if-user-exists", (req, res) => {
+    const { email } = req.query; // Use req.query for GET requests
+
+    if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+    }
+
+    const sql = "SELECT id FROM users WHERE email = ?";
+    db.query(sql, [email], (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: "Internal server error" });
+        }
+
+        if (results.length > 0) {
+            res.json({ exists: true, message: "User exists" });
+        } else {
+            res.json({ exists: false, message: "User does not exist" });
+        }
+    });
+});
+
 
 const verifyToken = (req, res, next) => {
     const authHeader = req.headers["authorization"];

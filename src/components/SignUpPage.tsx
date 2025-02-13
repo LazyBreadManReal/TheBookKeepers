@@ -24,19 +24,29 @@ const SignUpPage: React.FC = () => {
       setMessage("Passwords do not match!");
       return;
     }
-    
     try {
-      const response = await axios.post("http://localhost:5000/api/register", formData);
-  
-      if(response.data.error) {
-        setMessage(response.data.error);
-        return;
-      }
-      setMessage("Registered");
-      return;
+        const response = await fetch(`http://localhost:5000/api/check-if-user-exists?email=${encodeURIComponent(formData.email)}`);
+        const data = await response.json();
+
+        if (data.exists) {
+            setMessage("User exists.");
+        } else {
+          try {
+            const response = await axios.post("http://localhost:5000/api/register", formData);
+        
+            if(response.data.error) {
+              setMessage(response.data.error);
+              return;
+            }
+            setMessage("Registered");
+            return;
+          } catch (error) {
+            console.error("Error registering:", error);
+            setMessage("An error occurred while registering. Please try again.");
+          }
+        }
     } catch (error) {
-      console.error("Error registering:", error);
-      setMessage("An error occurred while registering. Please try again.");
+        setMessage("Error checking user.");
     }
   }
 
