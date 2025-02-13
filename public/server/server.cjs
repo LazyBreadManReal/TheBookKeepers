@@ -5,10 +5,13 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+const SECRET_KEY = "REPLACE_KEY";
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -170,24 +173,44 @@ app.post("/api/login", async (req, res) => {
     const { email, password } = req.body;
 
     const sql = "SELECT password FROM users WHERE email = ?";
-    db.query(sql, [username], async (err, results) => {
+    db.query(sql, [email], async (err, results) => {
         if (err || results.length === 0) {
             return res.status(401).json({ message: "Invalid username or password" });
         }
 
-        const hashedPassword = results[0].password;
+        const { id, username, password: hashedPassword } = results[0];
         const isMatch = await bcrypt.compare(password, hashedPassword);
 
         if (isMatch) {
-            res.json({ message: "Login successful" });
+            const token = jwt.sign({ id, username, email }, SECRET_KEY, { expiresIn: "1h" });
+            res.json({ message: "Login successful", token });
         } else {
             res.status(401).json({ message: "Invalid username or password" });
         }
     });
-
-    connection.end();
 });
 
+
+const verifyToken = (req, res, next) => {
+    const authHeader = req.headers["authorization"];
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(403).json({ message: "Access denied. No token provided." });
+    }
+
+    const token = authHeader.split(" ")[1]; // Extract token from "Bearer <token>"
+
+    jwt.verify(token, SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: "Invalid token" });
+        }
+        req.user = decoded;
+        next();
+    });
+};
+
+app.get("/api/protected-route", verifyToken, (req, res) => {
+    res.json({ message: "You have access to this protected route!", user: req.user });
+});
 
 app.listen(5000, ()=> {
     console.log('Server is running on port 5000');

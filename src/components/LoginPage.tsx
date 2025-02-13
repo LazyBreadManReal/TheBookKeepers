@@ -3,11 +3,43 @@ import "../assets/css/LoginPage.css";
 import GoogleIcon from "../assets/images/google-icon.png"
 import FacebookIcon from "../assets/images/facebook-icon.png"
 import InstagramIcon from "../assets/images/instagram-icon.png"
+import axios from "axios";
 
 const LoginPage: React.FC = () => {
   const RedirectToSignUp = () => {
     window.location.href = 'http://localhost:5173/signup';
   };
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [message, setMessage] = useState("");
+
+  const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({...formData, [e.target.name]: e.target.value });
+  }
+
+  const handleSubmit = async(e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:5000/api/login", formData);
+  
+      if(response.data.error) {
+        setMessage(response.data.error);
+        return;
+      }
+
+      const { token } = response.data;
+      localStorage.setItem("token", token);
+
+      setMessage("Login successful!");
+      setTimeout(() => window.location.href = 'http://localhost:5173/', 1000);
+      return;
+    } catch (error) {
+      console.error("Error registering:", error);
+      setMessage("An error occurred while registering. Please try again.");
+    }
+  }
 
   return (
     <div className="login-page">
@@ -35,13 +67,15 @@ const LoginPage: React.FC = () => {
               <span>OR</span>
             </div>
             <form id="login-form">
-              <input type="email" placeholder="Email" id="email" />
+              <input type="email" placeholder="Email" name="email" onChange={handleFieldChange}/>
               <input
                 type="password"
                 placeholder="Password"
-                id="password"
+                name="password"
+                onChange={handleFieldChange}
               />
-              <button type="submit" className="login-btn">
+              <p>{message}</p>
+              <button type="submit" className="login-btn" onClick={handleSubmit}>
                 Sign In
               </button>
             </form>
