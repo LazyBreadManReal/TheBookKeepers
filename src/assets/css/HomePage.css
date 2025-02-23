@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Newsreader:wght@400;600;700&display=swap');
+
+* {
+    font-family: 'Inter', sans-serif;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+.intro-banner {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    display: flex;
+    box-shadow: 1px;
+}
+
+.intro-banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    position: absolute;
+    z-index: 1;
+}
+
+.intro-banner-gradient {
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(128, 0, 0, 0.7) 0%, rgba(128, 0, 0, 0.3) 30%, rgba(128, 0, 0, 0.1));
+    position: absolute;
+    z-index: 2;
+}
+
+.intro-banner-content {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+    text-align: center;
+    font-size: 4rem;
+}
+
+.company-stand {
+    width: 50%;
+    height: 10%;
+    color: white; 
+    text-align: center;
+    text-decoration: underline;
+    font-size: 4rem;
+    font-family: 'Newsreader', serif; 
+    border: 2px;
+}
+
+.become-a-member-button {
+    width: 200px;
+    height: 50px;
+    background: maroon;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.updates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 40px;
+    font-family: 'Inter', sans-serif;
+}
+
+.updates-left {
+    width: 100%;
+    max-width: 400px;
+}
+
+.updates-left h2 {
+    color: maroon;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.updates-left p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.announcement-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.announcement {
+    height: 40px;
+    background: #e6e6e6;
+    border-radius: 5px;
+}
+
+.announcement.lines {
+    height: 20px;
+}
+
+.updates-right {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.newsletter-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.newsletter-card h3 {
+    font-size: 1.2rem;
+    color: maroon;
+    margin-bottom: 10px;
+}
+
+.newsletter-card p {
+    font-size: 0.9rem;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+.signup-btn {
+    background: maroon;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.signup-btn .arrow {
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .updates {
+        flex-direction: column;
+        align-items: center;
+    }
+    .updates-left {
+        text-align: center;
+    }
+    .updates-right {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    .intro-banner-content {
+        font-size: 2.5rem;
+    }
+    .company-stand {
+        font-size: 3rem;
+        width: 80%;
+    }
+}

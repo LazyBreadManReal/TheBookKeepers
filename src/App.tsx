@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NavigationBar from "./components/NavigationBar";
-import MainPage from "./components/MainPage";
+import HomePage from "./components/HomePage";
 import Footer from "./components/Footer";
 import {
   BrowserRouter as Router,
@@ -23,7 +23,7 @@ const App: React.FC = () => {
           element={
             <>
               <NavigationBar />
-              <MainPage />
+              <HomePage />
               <Footer />
             </>
           }
