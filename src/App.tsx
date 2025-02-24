@@ -12,6 +12,7 @@ import SignUpPage from "./components/SignUpPage";
 import LoginPage from "./components/LoginPage";
 import MarketPage from "./components/MarketPage";
 import CreateListingPage from "./components/CreateListingPage";
+import "./assets/css/App.css"
 
 const App: React.FC = () => {
 
