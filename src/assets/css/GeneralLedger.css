@@ -1,13 +1,121 @@
+/* General container for the ledger */
 .ledger-container {
   padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
 }
 
-table {
+/* Title for the general ledger */
+h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #2c3e50;
+}
+
+/* Account header style */
+.ledger-account h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #16a085;
+  font-weight: bold;
+  text-align: left;
+}
+
+/* Table for displaying entries */
+.ledger-table {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 20px;
+  table-layout: fixed;
 }
 
-th, td {
-  border: 1px solid #ccc;
+.ledger-table th, .ledger-table td {
   padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  word-wrap: break-word;
+}
+
+.ledger-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.ledger-table td {
+  font-size: 0.95rem;
+  color: #7f8c8d;
+  text-align: left;
+}
+
+.ledger-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Debit and Credit Columns Styling */
+.ledger-table .debit-column {
+  text-align: right;
+}
+
+.ledger-table .credit-column {
+  text-align: right;
+}
+
+/* Footer for the Total and Net Amount */
+tfoot td {
+  font-weight: bold;
+  color: #2980b9;
+  padding-top: 15px;
+  text-align: right;
+}
+
+tfoot tr {
+  border-top: 2px solid #ddd;
+}
+
+tfoot td:first-child {
+  text-align: left;
+}
+
+/* Total and Net Amount Rows */
+tfoot tr.total-row td {
+  text-align: left;
+}
+
+tfoot tr.net-amount-row td {
+  color: #e74c3c;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 10px 0;
+  text-align: center;
+}
+
+/* Add subtle alternating row colors for better readability */
+.ledger-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.ledger-table tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+/* Responsiveness for small screens */
+@media screen and (max-width: 768px) {
+  .ledger-table th, .ledger-table td {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .ledger-container {
+    padding: 10px;
+  }
+
+  .ledger-account h3 {
+    font-size: 1.2rem;
+  }
 }
