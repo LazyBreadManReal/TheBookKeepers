@@ -1,286 +1,318 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Newsreader:wght@400;600;700&display=swap");
-
-* {
-  font-family: "Inter", sans-serif;
+@font-face {
+  font-family: 'Aftika';
+  src: url('../fonts/Aftika/Fontspring-DEMO-aftika-regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
 }
 
-body,
-html {
+@font-face {
+  font-family: 'Aftika';
+  src: url('../fonts/Aftika/Fontspring-DEMO-aftika-bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bebas';
+  src: url('../fonts/Bebas/BebasNeue\ Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bebas';
+  src: url('../fonts/Bebas/BebasNeue\ Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Champagne & Limousines';
+  src: url('../fonts/Champagne\ &\ Limousines/Champagne & Limousines.ttf') format('truetype');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Champagne & Limousines';
+  src: url('../fonts/Champagne\ &\ Limousines/Champagne & Limousines Bold.ttf') format('truetype');
+  font-weight: bold;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden; /* Prevent scrollbars */
 }
 
 .content {
-  width: 100vw;
-}
-
-.intro-banner {
-  width: 100%;
-  height: 500px;
-  position: relative;
-  display: flex;
-  box-shadow: 1px;
-}
-
-.intro-banner-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: top;
+  position: relative;
+}
+
+.bg-img {
   position: absolute;
+  width: 100%;
+  height: 100vh;
   z-index: 1;
 }
 
-.intro-banner-gradient {
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(
-    circle,
-    rgba(128, 0, 0, 0.7) 0%,
-    rgba(128, 0, 0, 0.3) 30%,
-    rgba(128, 0, 0, 0.1)
-  );
-  position: absolute;
-  z-index: 2;
-}
-
-.intro-banner-content {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: 3;
+.navbar {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  color: white;
-  text-align: center;
-  font-size: 4rem;
+  width: 100%;
+  height: 12vh;
+  z-index: 5;
+  background-color: #18342c;
+  border-bottom: rgb(255, 255, 255) 5px solid;
 }
 
-.company-stand {
-  width: 50%;
-  height: 10%;
-  color: white;
-  text-align: center;
-  text-decoration: underline;
-  font-size: 4rem;
-  font-family: "Newsreader", serif;
-  border: 2px;
-  z-index: 3;
+.logo-moto-section {
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-.become-a-member-button {
-  width: 200px;
-  height: 50px;
-  background: maroon;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1.2rem;
+.logo-moto-section h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  font-family: 'Champagne & Limousines', sans-serif;
+  font-weight: normal;
+  color: #baad6f;
+}
+
+.navbar img {
+  height: 10vh;
+}
+
+.navbar h1 {
+  text-align: center;
+  width: 40%;
   text-decoration: none;
-  transition: 0.3s ease;
-  z-index: 3;
+  color: white;
+  padding: 1%;
+  font-size: 2.5rem;
+  font-family: 'Aftika', sans-serif;
+  font-weight: bold;
 }
 
-.updates {
+.about-us-section {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding: 40px;
-  padding-left: 100px;
-  padding-right: 100px;
-  font-family: "Inter", sans-serif;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 30%;
 }
 
-.updates-left {
-  width: 100%;
-  max-width: 400px;
+.about-us {
+  width: 30%;
+  margin-right: 2%;
 }
 
-.updates-left h2 {
-  color: maroon;
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
-
-.updates-left p {
+.about-us h2 {
   font-size: 1rem;
-  margin-bottom: 20px;
+  color: white;
+  text-align: center; 
+  border-radius: 10px;
+  padding: 3%;
+  border: white 1px solid;
+  font-family: 'Bebas', sans-serif;
+  font-weight: normal;
 }
 
-.announcement-list {
+.socials {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 4%;
+}
+
+.socials img {
+  height: 3.5vh;
+  border: white 1px solid;
+  border-radius: 50%;
+}
+
+.actual-content-section {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-
-.announcement {
-  height: 40px;
-  background: #e6e6e6;
-  border-radius: 5px;
-}
-
-.announcement.lines {
-  height: 20px;
-}
-
-.updates-right {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.newsletter-card {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
-}
-
-.newsletter-card h3 {
-  font-size: 1.2rem;
-  color: maroon;
-  margin-bottom: 10px;
-}
-
-.newsletter-card p {
-  font-size: 0.9rem;
-  margin-bottom: 15px;
-}
-
-.signup-btn-home {
-  background: maroon;
-  color: white;
+  align-items: center;
+  position: absolute;
   width: 100%;
+  height: 100vh;
+  z-index: 5;
+}
+
+.main-section {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 88vh;
+}
+
+.info-graphic {
+  width: 55%;
+  height: 85%;
+  padding-left: 4%;
+  padding-right: 4%;
+  padding-top: 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-graphic h1 {
+  margin: 0;
+  text-align: center;
+  width: 100%;
+  height: 10%;
+  font-size: 3.5rem;
+  color: white;
+  font-family: 'Bebas', sans-serif;
+  font-weight: bold;
+}
+
+.info-graphic p {
+  margin: 0;
+  width: 98%;
+  height: 20%;
+  color: white;
+  font-family: 'Bebas', sans-serif;
+  font-weight: normal;
+  text-align: justify;
+  font-size: 1.2rem;
+}
+
+.info-graphic img {
+  width: 80%;
+  height: 75%;
+}
+
+.login-section {
+  width: 50%;
+  margin-top: 0.5%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.login-up-section {
+  height: 10%;
+  width: 80%;
+  margin-bottom: 3%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.login-up-section img{
+  height: 40%;
+  width: 6%;
+  padding: 2%;
+  margin-right: 2.5%;
+  border: 2px white solid;
+  border-radius: 50%;
+}
+
+.login-up-section p {
+  font-size: 1rem;
+  color: white;
+  text-align: center; 
+  border-radius: 50px;
+  padding: 1.5%;
+  border: white 1px solid;
+  font-family: 'Bebas', sans-serif;
+  font-weight: normal;
+}
+
+.login-form-section {
+  width: 60%;
+  height: 70%;
+  margin-left: 7%;
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-form-section img {
+  width: 20%;
+  height: 17%;
+  padding: 3%;
+  margin: 3%;
+  background-color: white;
+  border-radius: 30%;
+}
+
+.login-form {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 5%;
+  margin: 3%;
   border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  font-size: 1rem;
+  border-bottom: 2px solid white;
+  background: transparent;
+  color: white;
+  font-size: 16px;
+  outline: none;
+}
+
+/* Placeholder Text */
+.login-form input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Login Button */
+.login-btn {
+  width: 100%;
+  padding: 5%;
+  margin-top: 2%;
+  border: none;
+  background-color: #26a69a;
+  color: white;
+  font-size: 16px;
+  border-radius: 25px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  transition: background 0.3s ease;
 }
 
-.signup-btn .arrow {
-  font-size: 1.2rem;
+.login-btn:hover {
+  background-color: #1e8e78;
 }
 
-.sponsored-farms-banner {
-  width: 100%;
-  height: 150px;
-  position: relative;
-  display: flex;
-  box-shadow: 1px;
-}
-
-.sponsored-banner-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: middle;
-  position: absolute;
-  z-index: 1;
-}
-
-.sponsored-banner-gradient {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, white, rgba(255, 255, 255, 0), white);
-  position: absolute;
-  z-index: 2;
-}
-
-.sponsored-banner-content {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+/* Sign-up Text */
+.signup-text {
+  margin-top: 15px;
+  font-size: 14px;
   color: white;
-  text-align: center;
-  font-size: 4rem;
 }
 
-.sponsored-banner-content p {
-  color: white;
-  text-align: center;
+/* Sign-up Link */
+.signup-link {
+  color: #26a69a;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signup-link:hover {
   text-decoration: underline;
-  font-size: 4rem;
-  font-family: "Newsreader", serif;
-  border: 2px;
-  z-index: 3;
-}
-
-.farm-list {
-  display: flex;
-  gap: 40px;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 40px;
-  padding-left: 100px;
-  padding-right: 100px;
-}
-
-.farm-card {
-  width: 400px;
-  height: 450px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  text-align: left;
-  font-family: "Inter", sans-serif;
-}
-
-.farm-image {
-  width: 100%;
-  height: 60%;
-  object-fit: cover;
-}
-
-.farm-info {
-  padding: 15px;
-}
-
-.farm-name {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.animal-count {
-  color: maroon;
-  font-weight: bold;
-  font-size: 1rem;
-}
-
-.farm-location {
-  font-size: 0.9rem;
-  color: #666;
-}
-
-@media (max-width: 768px) {
-  .updates {
-    flex-direction: column;
-    align-items: center;
-  }
-  .updates-left {
-    text-align: center;
-  }
-  .updates-right {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  }
-  .intro-banner-content {
-    font-size: 2.5rem;
-  }
-  .company-stand {
-    font-size: 3rem;
-    width: 80%;
-  }
 }

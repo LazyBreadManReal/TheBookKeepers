@@ -1,124 +1,141 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "../assets/css/HomePage.css";
-import goatImage from "../assets/images/goats/goat.png";
-import farmImage from "/src/assets/images/farm-bg.jpg"
 
 
-interface Farm {
-  imageUrl: string;
-  name: string;
-  animalCount: number;
-  location: string;
-}
 
 const HomePage: React.FC = () => {
-  const [userData, setUserData] = useState(null);
-  
-  const farms: Farm[] = [
-    {
-      imageUrl: "/src/assets/images/goats/goat.png", 
-      name: "John Doe Farm",
-      animalCount: 15,
-      location: "Huntington Beach, CA",
-    },
-    {
-      imageUrl: "/src/assets/images/goats/goat.png", 
-      name: "John Doe Farm",
-      animalCount: 15,
-      location: "Huntington Beach, CA",
-    },
-    {
-      imageUrl: "/src/assets/images/goats/goat.png", 
-      name: "John Doe Farm",
-      animalCount: 15,
-      location: "Huntington Beach, CA",
-    },
-  ];
+  const [formData, setFormData] = useState({ email: "", password: "", name: "", role: "User" });
+  const [error, setError] = useState<string | null>(null);
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [user, setUser] = useState<{ name: string } | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProtectedData = async () => {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        console.log("No token found in localStorage.");
-        return;
-      }
-
-      try {
-        const response = await axios.get("http://localhost:5000/api/protected-route", {
-          headers: {
-            Authorization: `Bearer ${token}`, // Ensure 'Bearer' prefix is included
-          },
-        });        
-
-        console.log("Protected Route Response:", response.data);
-        setUserData(response.data.user); // Save user data from response
-      } catch (error) {
-        console.error("Error accessing protected route:", error);
-      }
-    };
-
-    fetchProtectedData();
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
   }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    try {
+      if (isSignUp) {
+        const response = await axios.post("http://localhost:5000/api/signup", formData);
+        alert(response.data.message);
+        setIsSignUp(false);
+      } else {
+        const response = await axios.post("http://localhost:5000/api/login", formData);
+        alert(response.data.message);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify({ name: response.data.name }));
+        setUser({ name: response.data.name });
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message || "An error occurred.");
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+  };
 
   return (
     <div className="content">
-      <div className="intro-banner">
-        <div className="intro-banner-gradient"></div>
-        <img src="/src/assets/images/goats/goat.png" alt="goatimage" className="intro-banner-image" />
-        <div className="intro-banner-content">
-          <p className="company-stand">Insert Company stance</p>
-          <button className="become-a-member-button">Become A Member</button>
-        </div>
-      </div>
-      <section className="updates">
-        <div className="updates-left">
-          <h2>Updates</h2>
-          <p>Keep up with announcements, reminders, events.</p>
-          <div className="announcement-list">
-            <div className="announcement"></div>
-            <div className="announcement"></div>
-            <div className="announcement"></div>
-            <div className="announcement lines"></div>
+      <img src="/src/assets/images/background.png" alt="" className="bg-img"/>
+      <div className="actual-content-section">
+        <div className="navbar">
+          <div className="logo-moto-section">
+            <img src="/src/assets/images/Logo v2.png" alt="" className="logo"/>
+            <h2>PAVE YOUR PATH <br />AS WE TRACK THE MATH</h2>
           </div>
-        </div>
-
-        <div className="updates-right">
-          {[...Array(6)].map((_, index) => (
-            <div key={index} className="newsletter-card">
-              <h3>Sign up for a news letter</h3>
-              <p>
-                Stay updated on the latest news, special offers, and exclusive
-                insights. Get valuable updates delivered straight to your inbox.
-              </p>
-              <button className="signup-btn-home">
-                Sign Up <span className="arrow">→</span>
-              </button>
+          <h1>THE BOOKKEEPERS</h1>
+          <div className="about-us-section">
+            <div className="about-us">
+              <h2>ABOUT US</h2>
             </div>
-          ))}
-        </div>
-      </section>
-      <div className="sponsored-farms-banner">
-        <div className="sponsored-banner-gradient"></div>
-        <img src="/src/assets/images/farm-bg.jpg" alt="farm image" className="sponsored-banner-image" />
-        <div className="sponsored-banner-content">
-          <p>Sponsored Farms</p>
-        </div>
-      </div>
-      <div className="farm-list">
-        {farms.map((farm, index) => (
-          <div key={index} className="farm-card">
-            <img src={farm.imageUrl} alt={farm.name} className="farm-image" />
-            <div className="farm-info">
-              <h3 className="farm-name">{farm.name}</h3>
-              <p className="animal-count">
-                <span className="bold-text">{farm.animalCount} Goats</span>
-              </p>
-              <p className="farm-location">{farm.location}</p>
+            <div className="socials">
+              <img src="/src/assets/images/icons/facebook-white.png" alt="" />
+              <img src="/src/assets/images/icons/twitter.png" alt="" />
+              <img src="/src/assets/images/icons/instagram.png" alt="" />
+              <img src="/src/assets/images/icons/youtube.png" alt="" />
             </div>
           </div>
-        ))}
+        </div>
+        <div className="main-section">
+          <div className="info-graphic">
+            <img src="/src/assets/images/Icon.png" alt="" />
+            <h1>BOOKKEEPING SERVICES</h1>
+            <p>Our centralized database enables users to securely input, store, and access their financial data, ensuring efficient and reliable bookkeeping for businesses of all sizes. Whether clients manage their own records or rely on our expertise, we provide high-quality support and cost-effective solutions tailored to their needs.</p>
+          </div>
+          <div className="login-section">
+            <div className="login-up-section">
+              <img src="/src/assets/images/icons/search.png" alt="" />
+              <p>GET STARTED</p>
+            </div>
+            {user ? (
+              <div className="welcome-section">
+                <h2>Welcome, {user.name}!</h2>
+                <button onClick={() => navigate("/ChartOfAccounts")}>Edit Chart of Accounts</button>
+                <button onClick={() => navigate("/GeneralJournal")}>Edit General Journal</button>
+                <button onClick={handleLogout} className="logout-btn">Logout</button>
+              </div>
+            ) : (
+              <div className="login-form-section">
+                <img src="/src/assets/images/Logo v2.png" alt="Logo" className="logo" />
+                <form onSubmit={handleSubmit} className="login-form">
+                  {isSignUp && (
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Enter your name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                    />
+                  )}
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter email here"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter password here"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
+                  <button type="submit" className="login-btn">
+                    {isSignUp ? "Sign Up" : "Login"}
+                  </button>
+                </form>
+                {error && <p className="error-text">{error}</p>}
+                <p className="signup-text">
+                  {isSignUp ? (
+                    <>Already have an account? <a href="#" onClick={() => setIsSignUp(false)}>Log in here</a></>
+                  ) : (
+                    <>Don't have an account? <a href="#" onClick={() => setIsSignUp(true)}>Sign up here</a></>
+                  )}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

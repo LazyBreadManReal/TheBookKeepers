@@ -12,13 +12,75 @@ app.use(cors());
 app.use(express.json());
 
 const SECRET_KEY = "REPLACE_KEY";
+const databaseName = "bookkeepingdata"
 
 const db = mysql.createConnection({
-    host: 'localhost',
+    host: '127.0.0.1',
+    port: "3308",
     user: 'root',
-    password: 'jmgaming1011',
-    database: 'goatwebsite'
+    password: '',
 });
+
+const defaultAccounts = [
+    { account_code: 100, account_title: "ASSETS" },
+    { account_code: 101, account_title: "Cash on hand" },
+    { account_code: 102, account_title: "Cash in bank" },
+    { account_code: 103, account_title: "Notes Receivable" },
+    { account_code: 104, account_title: "Interest Receivable" },
+    { account_code: 105, account_title: "Accounts Receivable" },
+    { account_code: 106, account_title: "Advances to Employees" },
+    { account_code: 107, account_title: "Office Supplies Inventory" },
+    { account_code: 108, account_title: "Store Supplies on hand" },
+    { account_code: 109, account_title: "Prepaid insurance" },
+    { account_code: 120, account_title: "Land" },
+    { account_code: 200, account_title: "LIABILITIES" },
+    { account_code: 201, account_title: "Notes Payable" },
+    { account_code: 202, account_title: "Accounts Payable" },
+    { account_code: 300, account_title: "OWNER'S EQUITY" },
+    { account_code: 301, account_title: "Capital" },
+    { account_code: 400, account_title: "INCOME" },
+    { account_code: 401, account_title: "Service income" },
+    { account_code: 500, account_title: "EXPENSES" },
+    { account_code: 501, account_title: "Salaries expense" },
+    { account_code: 502, account_title: "Rent expense" }
+];
+
+const UsersTableFormat = `
+    CREATE TABLE IF NOT EXISTS Users (
+        user_id INT AUTO_INCREMENT PRIMARY KEY, 
+        name VARCHAR(255) NOT NULL, 
+        email VARCHAR(255) UNIQUE, 
+        password VARCHAR(255),
+        role ENUM("Admin", "Accountant", "User") NOT NULL, 
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+`;
+
+const ChartOfAccountsTableFormat = `
+    CREATE TABLE IF NOT EXISTS ChartOfAccounts (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        account_code INT NOT NULL UNIQUE,
+        account_title VARCHAR(255) NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+    );
+`;
+
+const GeneralJournalTableFormat = `
+    CREATE TABLE IF NOT EXISTS GeneralJournal (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        transaction_date DATE NOT NULL,
+        explanation TEXT NOT NULL,
+        post_ref VARCHAR(20),
+        debit DECIMAL(15,2) DEFAULT 0.00,
+        credit DECIMAL(15,2) DEFAULT 0.00,
+        FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+    );
+`;
+
+
+
 
 db.connect((err) => {
     if (err) {
@@ -26,212 +88,188 @@ db.connect((err) => {
         return;
     }
     console.log('Connected to MySQL database');
+});
 
-    //ensure listings table exists
-    db.query("SELECT * FROM listings", (err, results) => {
+db.query(
+    "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?",
+    [databaseName],
+    (err, results) => {
         if (err) {
-            if(err.code == "ER_NO_SUCH_TABLE") {
-                CreateTableQuery = "create table listings (id int key auto_increment, listing_name varchar(255), listing_email varchar(255), price int, location varchar(255), description text)";
-                db.query(CreateTableQuery, (err, results) => {
-                    if(err){
-                        console.error("DATABASE ERROR: listings table Initialized failed");
-                    }
-                    console.log("DATABASE: TABLE listings Initialized")
-                })
-            }
-        }
-    });
-    db.query("SELECT * FROM users", (err, results) => {
-        if (err) {
-            if(err.code == "ER_NO_SUCH_TABLE") {
-                CreateTableQuery = "create table users (id int key auto_increment, username varchar(255), email varchar(255), password varchar(255))";
-                db.query(CreateTableQuery, (err, results) => {
-                    if(err){
-                        console.error("DATABASE ERROR: users table Initialized failed");
-                    }
-                    console.log("DATABASE: TABLE users Initialized")
-                })
-            }
-        }
-    });
-});
-
-const getUploadPathListingImages = (listingId) => path.join(path.dirname(__dirname), 'listing_images', listingId);
-
-
-const listing_images_folder = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const listingId = req.params.listingId;
-        const uploadPath = getUploadPathListingImages(listingId);
-        
-        if (!fs.existsSync(uploadPath)) {
-            fs.mkdirSync(uploadPath, { recursive: true });
-        }
-
-        cb(null, uploadPath);
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Rename file
-    }
-});
-
-const upload_listing_image = multer({ storage: listing_images_folder });
-
-
-app.post('/api/upload-images/:listingId', upload_listing_image.array('images', 10), (req, res) => {
-    if (!req.files || req.files.length === 0) {
-        return res.status(400).json({ error: 'No files uploaded' });
-    }
-
-    const listingId = req.params.listingId;
-    const imagePaths = req.files.map(file => `/public/listing_images/${listingId}/${file.filename}`);
-
-    return res.status(200).json({ message: 'Images uploaded successfully', imagePaths });
-});
-
-app.get('/api/get-listings', (req, res) => {
-    query = "SELECT * FROM listings"
-    db.query(query, (err, results) => {
-        if (err) {
-            console.error('Error fetching listings:', err);
-            return res.status(500).json({ error: 'Database query error' });
-        }
-        return res.json(results);
-    });
-})
-
-app.post('/api/add-listing', (req, res) => {
-    const { listing_name, listing_email, price, location, description } = req.body;
-
-    if (!listing_name || !listing_email || !price || !location || !description) {
-        return res.status(400).json({ error: 'All fields are required' });
-    }
-
-
-    const query = "INSERT INTO listings (listing_name, listing_email, price, location, description) VALUES (?, ?, ?, ?, ?)";
-    db.query(query, [listing_name, listing_email, price, location, description], (err, result) => {
-        if (err) {
-            console.error('Error inserting listing:', err);
-            return res.status(500).json({ error: 'Database insert error' });
-        }
-        const listingId = result.insertId;
-        return res.status(201).json({ message: 'Listing added successfully', listingId });
-    });
-});
-
-app.get('/api/get-listing-images/:listingId', (req, res) => {
-    const listingId = req.params.listingId;
-    const listingPath = getUploadPathListingImages(listingId);
-
-    if (!fs.existsSync(listingPath)) {
-        return res.json({ images: [] });
-    }
-
-    fs.readdir(listingPath, (err, files) => {
-        if (err) {
-            return res.status(500).json({ error: 'Error reading image directory' });
-        }
-
-        const imagePaths = files.map(file => `/public/listing_images/${listingId}/${file}`);
-        res.json({ images: imagePaths });
-    });
-});
-
-
-const saltRounds = 10; // Number of hashing rounds
-
-async function hashPassword(plainPassword) {
-    const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
-    return hashedPassword;
-}
-
-app.post("/api/register", async (req, res) => {
-    const {username, email, password} = req.body;
-
-    if(!username | !email | !password) {
-        return res.status(400).json({ message: "All fields are required"});
-    }
-
-    try {
-        const hashedPassword = await hashPassword(password)
-
-        const query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)"
-        db.query(query, [username, email, hashedPassword], (err, result) => {
-            if(err) {
-                return res.status(500).json({ error: 'Error registering user' });
-            }
-            
-            res.status(201).json({ message: "User registered successfully" });
-        })
-    } catch(error) {
-        res.status(500).json({ message: "Error hashing password" });
-    }
-
-});
-
-app.post("/api/login", async (req, res) => {
-    const { email, password } = req.body;
-
-    const sql = "SELECT password FROM users WHERE email = ?";
-    db.query(sql, [email], async (err, results) => {
-        if (err || results.length === 0) {
-            return res.status(401).json({ message: "Invalid username or password" });
-        }
-
-        const { id, username, password: hashedPassword } = results[0];
-        const isMatch = await bcrypt.compare(password, hashedPassword);
-
-        if (isMatch) {
-            const token = jwt.sign({ id, username, email }, SECRET_KEY, { expiresIn: "1h" });
-            res.json({ message: "Login successful", token });
-        } else {
-            res.status(401).json({ message: "Invalid username or password" });
-        }
-    });
-});
-
-app.get("/api/check-if-user-exists", (req, res) => {
-    const { email } = req.query; // Use req.query for GET requests
-
-    if (!email) {
-        return res.status(400).json({ message: "Email is required" });
-    }
-
-    const sql = "SELECT id FROM users WHERE email = ?";
-    db.query(sql, [email], (err, results) => {
-        if (err) {
-            return res.status(500).json({ message: "Internal server error" });
+            console.error("Error checking database:", err);
+            return;
         }
 
         if (results.length > 0) {
-            res.json({ exists: true, message: "User exists" });
+            console.log(`Database "${databaseName}" already exists.`);
+            useDatabase();
         } else {
-            res.json({ exists: false, message: "User does not exist" });
+            console.log(`Database "${databaseName}" does NOT exist. Creating...`);
+            createDatabase();
         }
-    });
-});
-
-
-const verifyToken = (req, res, next) => {
-    const authHeader = req.headers["authorization"];
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(403).json({ message: "Access denied. No token provided." });
     }
+);
 
-    const token = authHeader.split(" ")[1]; // Extract token from "Bearer <token>"
-
-    jwt.verify(token, SECRET_KEY, (err, decoded) => {
+function createDatabase() {
+    db.query(`CREATE DATABASE ${databaseName}`, (err, result) => {
         if (err) {
-            return res.status(401).json({ message: "Invalid token" });
+            console.error("Error creating database:", err);
+            return;
         }
-        req.user = decoded;
+        console.log(`Database "${databaseName}" created successfully.`);
+        useDatabase();
+    });
+}
+
+
+function useDatabase() {
+    db.changeUser({ database: databaseName }, (err) => {
+        if (err) {
+            console.error("Error switching to database:", err);
+            return;
+        }
+        console.log(`Using database "${databaseName}".`);
+        initializeTables();
+    });
+}
+
+function initializeTables() {
+    db.query(UsersTableFormat, (err, results) => {
+        if(err){
+            console.error("DATABASE ERROR: Users table Initialized failed");
+        }
+        console.log("DATABASE: TABLE Users Initialized")
+    })
+    db.query(ChartOfAccountsTableFormat, (err, results) => {
+        if(err){
+            console.error("DATABASE ERROR: ChartOfAccounts table Initialized failed");
+            console.error(err.message);
+        }
+        console.log("DATABASE: TABLE ChartOfAccounts Initialized")
+    });
+    db.query(GeneralJournalTableFormat, (err, results) => {
+        if(err){
+            console.error("DATABASE ERROR: GeneralJournal table Initialized failed");
+        }
+        console.log("DATABASE: TABLE GeneralJournal Initialized")
+    });
+}
+
+// **Middleware to Authenticate Token**
+const authenticateToken = (req, res, next) => {
+    const token = req.headers['authorization'];
+    if (!token) return res.status(401).json({ message: "Access Denied" });
+
+    jwt.verify(token.split(' ')[1], SECRET_KEY, (err, user) => {
+        if (err) return res.status(403).json({ message: "Invalid Token" });
+        req.user = user;
         next();
     });
 };
 
-app.get("/api/protected-route", verifyToken, (req, res) => {
-    res.json({ message: "You have access to this protected route!", user: req.user });
+// **SIGNUP ROUTE**
+app.post('/api/signup', async (req, res) => {
+    const { name, email, password, role } = req.body;
+
+    if (!name || !email || !password || !role) {
+        return res.status(400).json({ message: "All fields are required." });
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const sql = "INSERT INTO Users (name, email, password, role) VALUES (?, ?, ?, ?)";
+
+        db.query(sql, [name, email, hashedPassword, role], (err, result) => {
+            if (err) {
+                if (err.code === "ER_DUP_ENTRY") {
+                    return res.status(409).json({ message: "Email already in use." });
+                }
+                console.error("Database error:", err);
+                return res.status(500).json({ message: "Error creating account." });
+            }
+
+            const userId = result.insertId; 
+            const accountValues = defaultAccounts.map(acc => [userId, acc.account_code, acc.account_title]);
+            const insertChartSql = "INSERT INTO ChartOfAccounts (user_id, account_code, account_title) VALUES ?";
+            db.query(insertChartSql, [accountValues], (chartErr) => {
+                if (chartErr) {
+                    console.error("Error inserting default accounts:", chartErr);
+                    return res.status(500).json({ message: "Error setting up default accounts." });
+                }
+                res.status(201).json({ message: "User registered successfully with default accounts!" });
+            });
+        });
+    } catch (error) {
+        console.error("Server error:", error);
+        res.status(500).json({ message: "Server error." });
+    }
 });
+
+
+
+// **LOGIN ROUTE**
+app.post('/api/login', (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ message: "Missing email or password." });
+    }
+
+    const query = "SELECT * FROM Users WHERE email = ?";
+    db.query(query, [email], async (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: "Database error." });
+        }
+        if (results.length === 0) {
+            return res.status(401).json({ message: "Incorrect password or email" });
+        }
+
+        const user = results[0];
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(401).json({ message: "Incorrect password or email" });
+        }
+
+        const token = jwt.sign(
+            { userId: user.user_id, email: user.email, role: user.role },
+            SECRET_KEY,
+            { expiresIn: '7d' }
+        );
+
+        res.json({ message: "Login successful.", token });
+    });
+});
+
+// **Fetch all general journal entries for the logged-in user**
+app.get("/api/general-journal", authenticateToken, (req, res) => {
+    const query = "SELECT * FROM GeneralJournal WHERE user_id = ? ORDER BY transaction_date DESC";
+    db.query(query, [req.user.userId], (err, results) => {
+        if (err) {
+            console.error("Database error fetching journal entries:", err);
+            return res.status(500).json({ message: "Error fetching journal entries." });
+        }
+        res.json(results);
+    });
+});
+
+// **Add a new journal entry linked to the logged-in user**
+app.post("/api/general-journal", authenticateToken, (req, res) => {
+    const { transaction_date, explanation, debit, credit } = req.body;
+
+    if (!transaction_date || !explanation) {
+        return res.status(400).json({ message: "Transaction date and explanation are required." });
+    }
+
+    const query = `INSERT INTO GeneralJournal (user_id, transaction_date, explanation, debit, credit) VALUES (?, ?, ?, ?, ?)`;
+    db.query(query, [req.user.userId, transaction_date, explanation, debit, credit], (err, result) => {
+        if (err) {
+            console.error("Database error inserting journal entry:", err);
+            return res.status(500).json({ message: "Error adding journal entry." });
+        }
+        res.status(201).json({ id: result.insertId, transaction_date, explanation, debit, credit });
+    });
+});
+
 
 app.listen(5000, ()=> {
     console.log('Server is running on port 5000');
