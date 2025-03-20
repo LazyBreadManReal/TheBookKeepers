@@ -1,13 +1,91 @@
 .journal-container {
+  max-width: 1000px;
+  margin: 20px auto;
   padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
 th, td {
-  border: 1px solid #ccc;
   padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+tr:hover {
+  background: #e9f5ff;
+}
+
+.add-entry {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.add-entry input,
+.add-entry select {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.add-entry button {
+  padding: 10px 15px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.add-entry button:hover {
+  background: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .journal-container {
+    padding: 15px;
+  }
+
+  th, td {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .add-entry {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .add-entry input,
+  .add-entry select {
+    width: 100%;
+    max-width: 300px;
+  }
 }
