@@ -193,7 +193,7 @@ const GeneralJournal = () => {
   return (
     <div className="journal-container">
       <h2>General Journal</h2>
-      <table>
+      <table className="general-journal-table">
         <thead>
           <tr>
             <th>Date</th>
