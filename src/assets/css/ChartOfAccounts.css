@@ -1,0 +1,23 @@
+.chart-container {
+    padding: 20px;
+  }
+  
+  .chart-container h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .add-account input {
+    margin-right: 10px;
+  }
+  

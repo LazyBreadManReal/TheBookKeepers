@@ -1,17 +1,14 @@
 import React, { useState } from "react";
-import NavigationBar from "./components/NavigationBar";
+import ChartOfAccounts from "./components/ChartOfAccounts";
+import GeneralJournal from "./components/GeneralJournal";
+import GeneralLedger from "./components/GeneralLedger";
 import HomePage from "./components/HomePage";
-import Footer from "./components/Footer";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import SignUpPage from "./components/SignUpPage";
-import LoginPage from "./components/LoginPage";
-import MarketPage from "./components/MarketPage";
-import CreateListingPage from "./components/CreateListingPage";
 import "./assets/css/App.css"
 
 const App: React.FC = () => {
@@ -19,20 +16,10 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <NavigationBar />
-              <HomePage />
-              <Footer />
-            </>
-          }
-        />
-        <Route path="/SignUp" element={<SignUpPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/Market" element={<MarketPage />} />
-        <Route path="/Market/NewListing" element={<CreateListingPage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/ChartOfAccounts" element={<ChartOfAccounts />} />
+        <Route path="/GeneralJournal" element={<GeneralJournal />} />
+        <Route path="/GeneralLedger" element={<GeneralLedger />} />
       </Routes>
     </Router>
   );
