@@ -12,8 +12,14 @@ interface LedgerEntry {
 
 const BalanceSheet = () => {
   const [ledgerEntries, setLedgerEntries] = useState<LedgerEntry[]>([]);
+  const [user, setUser] = useState<{ name: string } | null>(null);
 
   useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+      console.log(JSON.parse(storedUser))
+    }
     const token = localStorage.getItem("token");
     fetch("http://localhost:5000/api/general-journal", {
       headers: {
@@ -46,7 +52,7 @@ const BalanceSheet = () => {
   };
   return (
     <div className="balance-sheet-container">
-      <h2>Bora-Kaye Salon</h2>
+      <h1>{user ? user.name : ""}</h1>
       <h3>Balance Sheet</h3>
       <h4>As of {new Date().toLocaleDateString()}</h4>
 

@@ -29,7 +29,7 @@ const App: React.FC = () => {
         <Route path="/BalanceSheet" element={<BalanceSheet />} />
         <Route path="/IncomeStatement" element={<IncomeStatement />} />
         <Route path="/OwnersEquity" element={<OwnersEquity />} />
-        <Route path="/CashFlowStatement" element={<StatementOfCashflow />} />
+        <Route path="/StatementOfCashflow" element={<StatementOfCashflow />} />
       </Routes>
     </Router>
   );
