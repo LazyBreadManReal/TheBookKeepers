@@ -13,8 +13,15 @@ interface LedgerEntry {
 const TrialBalance = () => {
   const [ledgerEntries, setLedgerEntries] = useState<LedgerEntry[]>([]);
   const [trialBalance, setTrialBalance] = useState<any[]>([]);
+  const [user, setUser] = useState<{ name: string } | null>(null);
 
   useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+      console.log(JSON.parse(storedUser))
+    }
+
     const token = localStorage.getItem("token");
     fetch("http://localhost:5000/api/general-journal", {
       headers: {
@@ -65,6 +72,7 @@ const TrialBalance = () => {
 
   return (
     <div className="trial-balance-container">
+      <h1>{user ? user.name : ""}</h1>
       <h2>Trial Balance</h2>
       <p>As of {new Date().toLocaleDateString()}</p>
 

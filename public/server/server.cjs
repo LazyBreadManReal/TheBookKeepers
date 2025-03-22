@@ -238,7 +238,7 @@ app.post('/api/login', (req, res) => {
             { expiresIn: '7d' }
         );
 
-        res.json({ message: "Login successful.", token });
+        res.json({ message: "Login successful.", token, name: user.name });
     });
 });
 

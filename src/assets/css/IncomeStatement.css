@@ -1,46 +1,5 @@
-.category-column {
-  width: 400px;
+.balance-sheet-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-}
-
-.category-content {
-  width: 100%;
-}
-
-.category-table {
-  width: 100%;
-  margin-left: 2%;
-}
-
-.category-table th,
-.category-table td {
-  border: none;
-  padding: 8px;
-  padding-right: 10%;
-  text-align: left;
-  color: black;
-}
-
-.category-title, .category-table tr {
-  color: black;
-  text-align: left;
-}
-
-.balance-item {
-  color: black;
-}
-
-.balance-sheet-total {
-  margin: none;
-  width: 98%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.balance-sheet-total p {
-    margin: none;
-    color: black;
+  align-items: center;
 }

@@ -1,3 +1,11 @@
 .trial-balance-container {
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.trial-balance-container h2 {
+    color: black;
+    font-size: 1.2rem;
 }

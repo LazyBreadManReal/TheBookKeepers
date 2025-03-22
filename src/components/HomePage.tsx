@@ -37,7 +37,7 @@ const HomePage: React.FC = () => {
         alert(response.data.message);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify({ name: response.data.name }));
-        setUser({ name: response.data.name });
+        setUser({ name: response.data.name.name });
       }
     } catch (err: any) {
       setError(err.response?.data?.message || "An error occurred.");
@@ -88,6 +88,12 @@ const HomePage: React.FC = () => {
                 <h2>Welcome, {user.name}!</h2>
                 <button onClick={() => navigate("/ChartOfAccounts")}>Edit Chart of Accounts</button>
                 <button onClick={() => navigate("/GeneralJournal")}>Edit General Journal</button>
+                <button onClick={() => navigate("/GeneralLedger")}>GeneralLedger</button>
+                <button onClick={() => navigate("/TrialBalance")}>TrialBalance</button>
+                <button onClick={() => navigate("/BalanceSheet")}>BalanceSheet</button>
+                <button onClick={() => navigate("/IncomeStatement")}>IncomeStatement</button>
+                <button onClick={() => navigate("/OwnersEquity")}>OwnersEquity</button>
+                <button onClick={() => navigate("/StatementOfCashflow")}>StatementOfCashflow</button>
                 <button onClick={handleLogout} className="logout-btn">Logout</button>
               </div>
             ) : (
