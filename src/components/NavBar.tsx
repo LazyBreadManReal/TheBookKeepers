@@ -13,7 +13,7 @@ const NavBar: React.FC = () => {
       <h1><a href="http://localhost:5173/">THE BOOKKEEPER</a></h1>
       <div className="about-us-section">
         <div className="about-us">
-          <h2>ABOUT US</h2>
+          <h2><a href="http://localhost:5173/aboutus">ABOUT US</a></h2>
         </div>
         <div className="socials">
           <img src="/src/assets/images/icons/facebook-white.png" alt="" />

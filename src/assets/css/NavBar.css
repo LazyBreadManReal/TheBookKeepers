@@ -111,6 +111,13 @@
   font-weight: normal;
 }
 
+.about-us a {
+  font-size: 1rem;
+  font-family: 'Bebas', sans-serif;
+  font-weight: normal;
+}
+
+
 .socials {
   padding-right: 10%;
   width: 30%;
