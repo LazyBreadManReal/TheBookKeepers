@@ -56,7 +56,7 @@ const IncomeStatement = () => {
   // Calculate the Net Income (Revenue - Expenses)
   const revenueTotal = calculateTotal(revenue);
   const expensesTotal = calculateTotal(expenses);
-  const netIncome = revenueTotal.totalDebit - expensesTotal.totalCredit;
+  const netIncome = (revenueTotal.totalDebit + expensesTotal.totalDebit) - (expensesTotal.totalCredit + revenueTotal.totalCredit);
 
   return (
     <>
