@@ -1,16 +1,29 @@
 /* General container for the ledger */
 .ledger-container {
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  width: 80%;
   padding: 20px;
   font-family: Arial, sans-serif;
-  color: #333;
+  color: black;
+  background-color: white;
+  height: 600px;
+  border-radius: 8px;
 }
-
 /* Title for the general ledger */
 h2 {
   font-size: 2rem;
   margin-bottom: 20px;
   text-align: center;
-  color: #2c3e50;
+  color: #005744;
+}
+
+.ledger-content {
+  overflow-y: auto; /* Enables scrolling within if needed */
 }
 
 /* Account header style */
@@ -40,12 +53,12 @@ h2 {
 .ledger-table th {
   background-color: #f2f2f2;
   font-weight: bold;
-  color: #2c3e50;
+  color: black;
 }
 
 .ledger-table td {
   font-size: 0.95rem;
-  color: #7f8c8d;
+  color: black;
   text-align: left;
 }
 
@@ -63,6 +76,10 @@ h2 {
 }
 
 /* Footer for the Total and Net Amount */
+.net-amount-row td, .net-amount-row { 
+  color: #2980b9;
+}
+
 tfoot td {
   font-weight: bold;
   color: #2980b9;

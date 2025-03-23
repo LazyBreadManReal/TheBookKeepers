@@ -71,6 +71,7 @@ const GeneralJournalTableFormat = `
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT NOT NULL,
         transaction_date DATE NOT NULL,
+        transaction_key int NOT NULL,
         account_code INT NOT NULL,
         account_title VARCHAR(255) NOT NULL,
         description TEXT NOT NULL,
@@ -245,7 +246,7 @@ app.post('/api/login', (req, res) => {
 // **Fetch all general journal entries for the logged-in user**
 app.get("/api/general-journal", authenticateToken, (req, res) => {
     const query = `
-        SELECT id, transaction_date, account_code, account_title, description, reference_number, debit, credit
+        SELECT id, transaction_date, transaction_key, account_code, account_title, description, reference_number, debit, credit
         FROM GeneralJournal
         WHERE user_id = ?
         ORDER BY transaction_date DESC
@@ -261,88 +262,180 @@ app.get("/api/general-journal", authenticateToken, (req, res) => {
 
 // **Add a new journal entry linked to the logged-in user**
 app.post("/api/general-journal", authenticateToken, (req, res) => {
-    const { transaction_date, account_code, account_title, description, reference_number, debit, credit } = req.body;
+    const { 
+        transaction_date, 
+        transaction_key, 
+        account_code_debit, 
+        account_title_debit, 
+        account_code_credit, 
+        account_title_credit, 
+        description, 
+        reference_number, 
+        amount 
+    } = req.body;
 
-    if (!transaction_date || !account_code || !account_title || !description) {
-        return res.status(400).json({ message: "Transaction date, account code, account title, and description are required." });
+    if (!transaction_date || !account_code_debit || !account_title_debit || !account_code_credit || !account_title_credit || !description) {
+        return res.status(400).json({ message: "Transaction date, account codes, account titles, and description are required." });
     }
 
-    const query = `
-        INSERT INTO GeneralJournal (user_id, transaction_date, account_code, account_title, description, reference_number, debit, credit)
+    const userId = req.user.userId;
+    const refNumber = reference_number || null;
+    const transactionAmount = amount || 0.00;
+
+    const debit_query = `
+        INSERT INTO GeneralJournal (user_id, transaction_date, transaction_key, account_code, account_title, description, reference_number, debit)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
-    
-    db.query(
-        query, 
-        [req.user.userId, transaction_date, account_code, account_title, description, reference_number || null, debit || 0.00, credit || 0.00],
-        (err, result) => {
-            if (err) {
-                console.error("Database error inserting journal entry:", err);
-                return res.status(500).json({ message: "Error adding journal entry." });
-            }
-            res.status(201).json({ 
-                id: result.insertId, 
-                transaction_date, 
-                account_code, 
-                account_title, 
-                description, 
-                reference_number, 
-                debit, 
-                credit 
-            });
+
+    const credit_query = `
+        INSERT INTO GeneralJournal (user_id, transaction_date, transaction_key, account_code, account_title, description, reference_number, credit)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.beginTransaction((err) => {
+        if (err) {
+            console.error("Transaction start error:", err);
+            return res.status(500).json({ message: "Database transaction error." });
         }
-    );
+
+        // Insert Debit Entry
+        db.query(
+            debit_query, 
+            [userId, transaction_date, transaction_key, account_code_debit, account_title_debit, description, refNumber, transactionAmount], 
+            (err, result) => {
+                if (err) {
+                    return db.rollback(() => {
+                        console.error("Database error inserting debit entry:", err);
+                        res.status(500).json({ message: "Error adding debit entry." });
+                    });
+                }
+
+                // Insert Credit Entry
+                db.query(
+                    credit_query, 
+                    [userId, transaction_date, transaction_key, account_code_credit, account_title_credit, description, refNumber, transactionAmount], 
+                    (err, result) => {
+                        if (err) {
+                            return db.rollback(() => {
+                                console.error("Database error inserting credit entry:", err);
+                                res.status(500).json({ message: "Error adding credit entry." });
+                            });
+                        }
+
+                        // Commit Transaction
+                        db.commit((err) => {
+                            if (err) {
+                                return db.rollback(() => {
+                                    console.error("Transaction commit error:", err);
+                                    res.status(500).json({ message: "Transaction commit failed." });
+                                });
+                            }
+
+                            res.status(201).json({
+                                message: "Transaction added successfully",
+                                transaction_key,
+                                transaction_date,
+                                description,
+                                reference_number: refNumber,
+                                amount: transactionAmount
+                            });
+                        });
+                    }
+                );
+            }
+        );
+    });
 });
 
 // **Update an existing journal entry**
-app.put("/api/general-journal/:id", authenticateToken, (req, res) => {
-    const { id } = req.params;
-    const { transaction_date, account_code, account_title, description, reference_number, debit, credit } = req.body;
+app.put("/api/general-journal/:transaction_key", authenticateToken, (req, res) => {
+    const { transaction_key } = req.params;
+    const { transaction_date, account_code_debit, account_title_debit, account_code_credit, account_title_credit, description, reference_number, amount } = req.body;
 
-    if (!transaction_date || !account_code || !account_title || !description) {
-        return res.status(400).json({ message: "Transaction date, account code, account title, and description are required." });
+    if (!transaction_date || !account_code_debit || !account_title_debit || !account_code_credit || !account_title_credit || !description) {
+        return res.status(400).json({ message: "Transaction date, account codes, account titles, and description are required." });
     }
 
-    const query = `
+    const userId = req.user.userId;
+    const refNumber = reference_number || null;
+    const transactionAmount = amount || 0.00;
+
+    const update_debit_query = `
         UPDATE GeneralJournal
-        SET transaction_date = ?, account_code = ?, account_title = ?, description = ?, reference_number = ?, debit = ?, credit = ?
-        WHERE id = ? AND user_id = ?
+        SET transaction_date = ?, account_code = ?, account_title = ?, description = ?, reference_number = ?, debit = ?
+        WHERE transaction_key = ? AND user_id = ? AND debit > 0
     `;
 
-    db.query(
-        query, 
-        [transaction_date, account_code, account_title, description, reference_number || null, debit || 0.00, credit || 0.00, id, req.user.userId],
-        (err, result) => {
-            if (err) {
-                console.error("Database error updating journal entry:", err);
-                return res.status(500).json({ message: "Error updating journal entry." });
-            }
-            if (result.affectedRows === 0) {
-                return res.status(404).json({ message: "Journal entry not found or unauthorized." });
-            }
-            res.json({ 
-                id, 
-                transaction_date, 
-                account_code, 
-                account_title, 
-                description, 
-                reference_number, 
-                debit, 
-                credit 
-            });
+    const update_credit_query = `
+        UPDATE GeneralJournal
+        SET transaction_date = ?, account_code = ?, account_title = ?, description = ?, reference_number = ?, credit = ?
+        WHERE transaction_key = ? AND user_id = ? AND credit > 0
+    `;
+
+    db.beginTransaction((err) => {
+        if (err) {
+            console.error("Transaction start error:", err);
+            return res.status(500).json({ message: "Database transaction error." });
         }
-    );
+
+        // Update Debit Entry
+        db.query(
+            update_debit_query, 
+            [transaction_date, account_code_debit, account_title_debit, description, refNumber, transactionAmount, transaction_key, userId], 
+            (err, result) => {
+                if (err) {
+                    return db.rollback(() => {
+                        console.error("Database error updating debit entry:", err);
+                        res.status(500).json({ message: "Error updating debit entry." });
+                    });
+                }
+
+                // Update Credit Entry
+                db.query(
+                    update_credit_query, 
+                    [transaction_date, account_code_credit, account_title_credit, description, refNumber, transactionAmount, transaction_key, userId], 
+                    (err, result) => {
+                        if (err) {
+                            return db.rollback(() => {
+                                console.error("Database error updating credit entry:", err);
+                                res.status(500).json({ message: "Error updating credit entry." });
+                            });
+                        }
+
+                        // Commit Transaction
+                        db.commit((err) => {
+                            if (err) {
+                                return db.rollback(() => {
+                                    console.error("Transaction commit error:", err);
+                                    res.status(500).json({ message: "Transaction commit failed." });
+                                });
+                            }
+
+                            res.json({
+                                message: "Transaction updated successfully",
+                                transaction_key,
+                                transaction_date,
+                                description,
+                                reference_number: refNumber,
+                                amount: transactionAmount
+                            });
+                        });
+                    }
+                );
+            }
+        );
+    });
 });
 
 // **Delete a journal entry**
-app.delete("/api/general-journal/:id", authenticateToken, (req, res) => {
-    const { id } = req.params;
+app.delete("/api/general-journal/:transaction_key", authenticateToken, (req, res) => {
+    const { transaction_key } = req.params;
 
     const query = `
-        DELETE FROM GeneralJournal WHERE id = ? AND user_id = ?
+        DELETE FROM GeneralJournal WHERE transaction_key = ? AND user_id = ?
     `;
 
-    db.query(query, [id, req.user.userId], (err, result) => {
+    db.query(query, [transaction_key, req.user.userId], (err, result) => {
         if (err) {
             console.error("Database error deleting journal entry:", err);
             return res.status(500).json({ message: "Error deleting journal entry." });
@@ -364,24 +457,6 @@ app.get("/api/chart-of-accounts", authenticateToken, (req, res) => {
             return res.status(500).json({ message: "Error retrieving accounts." });
         }
         res.json(results);
-    });
-});
-
-app.post("/api/chart-of-accounts", authenticateToken, (req, res) => {
-    const { account_code, account_title } = req.body;
-
-    if (!account_code || !account_title) {
-        return res.status(400).json({ message: "Account code and title are required." });
-    }
-
-    const query = `INSERT INTO ChartOfAccounts (user_id, account_code, account_title) VALUES (?, ?, ?)`;
-
-    db.query(query, [req.user.userId, account_code, account_title], (err, result) => {
-        if (err) {
-            console.error("Error adding new account:", err);
-            return res.status(500).json({ message: "Error adding account." });
-        }
-        res.status(201).json({ id: result.insertId, account_code, account_title });
     });
 });
 

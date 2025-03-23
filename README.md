@@ -1,50 +1,35 @@
-# React + TypeScript + Vite
+INSTALLING STEPS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Install Xamp
+Download this zip and unzip at desired folder
 
-Currently, two official plugins are available:
+SETUP:
+open the cmd prompt and use this cmd
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+"cd "path/to/extract_folder"
 
-## Expanding the ESLint configuration
+ones there, run
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+"npm install"
 
-- Configure the top-level `parserOptions` property like this:
+wait for the install to be complete
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+RUNNING:
+to run the website
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+open xamp and start both apache and mysql
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+after activation
+
+on the previously open command promt run this command
+
+"npm start"
+
+this will start your website
+
+after activation go to this website
+
+http://localhost:5173/
+
+and your done!

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import "../assets/css/BalanceSheet.css";
+import NavBar from "./NavBar";
+import SwitchBar from "./SwitchBar";
 
 interface LedgerEntry {
   id: number;
@@ -51,81 +53,103 @@ const BalanceSheet = () => {
     return { totalDebit, totalCredit };
   };
   return (
-    <div className="balance-sheet-container">
-      <h1>{user ? user.name : ""}</h1>
-      <h3>Balance Sheet</h3>
-      <h4>As of {new Date().toLocaleDateString()}</h4>
+    <>
+      <NavBar></NavBar>
+      <div className="balance-sheet-container">
+        <h1>{user ? user.name : ""}</h1>
+        <h3>Balance Sheet</h3>
+        <h4>For the period ending {new Date().toLocaleDateString()}</h4>
 
-      <div className="balance-sheet-table">
-        <div className="category-column">
-          <h1>Assets</h1>
-          <div className="category-content">
-            <table className="category-table">
-              {assets.map((entry) => (
-                <tr key={entry.id} className="balance-item">
-                  <td>{entry.account_title}</td>
-                  <td>{entry.debit ? entry.debit.toLocaleString() : ""}</td>
-                  <td>{entry.credit ? entry.credit.toLocaleString() : ""}</td>
-                </tr>
-              ))}
-            </table>
-            <div className="balance-sheet-total">
-              <p>Total Assets</p>
-              <p>
-                {calculateTotal(assets).totalDebit !== calculateTotal(assets).totalCredit ? (
-                  <>
-                    <div>Debit: {calculateTotal(assets).totalDebit.toLocaleString()}</div>
-                    <div>Credit: {calculateTotal(assets).totalCredit.toLocaleString()}</div>
-                  </>
-                ) : (
-                  <>{calculateTotal(assets).totalDebit.toLocaleString()}</>
-                )}
-              </p>
+        <div className="balance-sheet-table">
+          <div className="category-column">
+            <h1>Assets</h1>
+            <div className="category-content">
+              <table className="category-table">
+                {assets.map((entry) => (
+                  <tr key={entry.id} className="balance-item">
+                    <td>{entry.account_title}</td>
+                    <td className="balnum">{entry.debit ? entry.debit.toLocaleString() : ""}</td>
+                    <td className="balnum">{entry.credit ? entry.credit.toLocaleString() : ""}</td>
+                  </tr>
+                ))}
+              </table>
+              <div className="balance-sheet-total">
+                <p className="net-amount-row">Total Assets</p>
+                <div>
+                  {calculateTotal(assets).totalDebit !== calculateTotal(assets).totalCredit ? (
+                    <>
+                      <div className="net-amount-row">Debit: {calculateTotal(assets).totalDebit.toLocaleString()}</div>
+                      <div className="net-amount-row">Credit: {calculateTotal(assets).totalCredit.toLocaleString()}</div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="net-amount-row">{calculateTotal(assets).totalDebit.toLocaleString()}</div>
+                    </>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
 
-        <div className="category-column">
-          <h1>Liabilities & Capital</h1>
-          <div className="category-content">
-            <table className="category-table">
-              <tr>Liabilities</tr>
-              {liabilities.map((entry) => (
-                <tr key={entry.id} className="balance-item">
-                  <td>{entry.account_title}</td>
-                  <td>{entry.debit ? entry.debit.toLocaleString() : ""}</td>
-                  <td>{entry.credit ? entry.credit.toLocaleString() : ""}</td>
-                </tr>
-              ))}
-              <tr></tr>
-              <tr>Capital</tr>
-              {equity.map((entry) => (
-                <tr key={entry.id} className="balance-item">
-                  <td>{entry.account_title}</td>
-                  <td>{entry.debit ? entry.debit.toLocaleString() : ""}</td>
-                  <td>{entry.credit ? entry.credit.toLocaleString() : ""}</td>
-                </tr>
-              ))}
-
-            </table>
-            <div className="balance-sheet-total">
-              <p>Total Liabilities and Capital</p>
-              <p>
-                {calculateTotal([...liabilities, ...equity]).totalDebit !== calculateTotal([...liabilities, ...equity]).totalCredit ? (
-                  <>
-                    <div>Debit: {calculateTotal([...liabilities, ...equity]).totalDebit.toLocaleString()}</div>
-                    <div>Credit: {calculateTotal([...liabilities, ...equity]).totalCredit.toLocaleString()}</div>
-                  </>
+          <div className="category-column">
+            <h1>Liabilities & Capital</h1>
+            <div className="category-content">
+              <table className="category-table">
+                <tr>Liabilities</tr>
+                {liabilities.length > 0 ? (
+                  liabilities.map((entry) => (
+                    <tr key={entry.id} className="balance-item">
+                      <td>{entry.account_title}</td>
+                      <td className="balnum">{entry.debit ? entry.debit.toLocaleString() : ""}</td>
+                      <td className="balnum">{entry.credit ? entry.credit.toLocaleString() : ""}</td>
+                    </tr>
+                  ))
                 ) : (
-                  <>{calculateTotal([...liabilities, ...equity]).totalDebit.toLocaleString()}</>
+                  <tr>
+                    <td colspan="3">N/A</td>
+                  </tr>
                 )}
-              </p>
+
+                <tr></tr>
+
+                <tr>Capital</tr>
+                {equity.length > 0 ? (
+                  equity.map((entry) => (
+                    <tr key={entry.id} className="balance-item">
+                      <td>{entry.account_title}</td>
+                      <td className="balnum">{entry.debit ? entry.debit.toLocaleString() : ""}</td>
+                      <td className="balnum">{entry.credit ? entry.credit.toLocaleString() : ""}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colspan="3">N/A</td>
+                  </tr>
+                )}
+              </table>
+
+              <div className="balance-sheet-total">
+                <p className="net-amount-row">Total Liabilities and Capital</p>
+                <div>
+                  {calculateTotal([...liabilities, ...equity]).totalDebit !== calculateTotal([...liabilities, ...equity]).totalCredit ? (
+                    <>
+                      <div className="net-amount-row">Debit: {calculateTotal([...liabilities, ...equity]).totalDebit.toLocaleString()}</div>
+                      <div className="net-amount-row">Credit: {calculateTotal([...liabilities, ...equity]).totalCredit.toLocaleString()}</div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="net-amount-row">{calculateTotal([...liabilities, ...equity]).totalDebit.toLocaleString()}</div>
+                    </>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <SwitchBar />
+    </>
   );
 };
 
