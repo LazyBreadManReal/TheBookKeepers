@@ -82,8 +82,6 @@ const HomePage: React.FC = () => {
           </div>
           <div className="login-section">
             <div className="login-up-section">
-              
-              <p>GET STARTED</p>
             </div>
             {user ? (
               <div className="welcome-section">
