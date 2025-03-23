@@ -77,7 +77,14 @@ const AboutUs: React.FC = () => {
         <div className="main-section">
           <div className="about-us-info-graphic">
             <h1>About Us</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum distinctio veritatis nam qui earum soluta ullam quia, asperiores illum atque et harum placeat quaerat provident, tempore magni, laboriosam minima. Quaerat.</p>
+            <p>The Bookkeeper is a database management system, designed to elevate your bookkeeping experience--the faster and more efficient</p>
+            <h2>The people behind The Bookkeeper</h2>
+            <img src="/src/assets/images/chart.jpg" alt="" />
+            <h2>Contact Us!</h2>
+            <h3>
+              E-mail: miles.deguzman@gmail.com <br />
+              Contact no.: +63 123 456 7890
+            </h3>
           </div>
         </div>
       </div>
