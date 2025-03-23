@@ -1,0 +1,31 @@
+.switchBar-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #6b5b009f;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.switchBar-bar button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 5px;
+  border-radius: 50%;
+}
+
+.switchBar-bar button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.switchBar-bar button:active {
+  background: rgba(255, 255, 255, 0.4);
+}

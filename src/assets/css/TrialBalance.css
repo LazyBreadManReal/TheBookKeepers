@@ -3,9 +3,27 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .trial-balance-container h2 {
     color: black;
     font-size: 1.2rem;
+    margin: 0;
+}
+
+.trial-balance-container h1 {
+  color: black;
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.trial-balance-container p {
+  margin: 0;
+  padding-bottom: 5%;
 }

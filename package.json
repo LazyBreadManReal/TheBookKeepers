@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "nodemon public/server/server.cjs"
+    "start": "concurrently \"npm run dev\" \"nodemon public/server/server.cjs"
   },
   "dependencies": {
     "axios": "^1.7.9",

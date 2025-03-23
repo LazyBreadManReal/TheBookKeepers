@@ -1,0 +1,128 @@
+@font-face {
+  font-family: 'Aftika';
+  src: url('../fonts/Aftika/Fontspring-DEMO-aftika-regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Aftika';
+  src: url('../fonts/Aftika/Fontspring-DEMO-aftika-bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bebas';
+  src: url('../fonts/Bebas/BebasNeue\ Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bebas';
+  src: url('../fonts/Bebas/BebasNeue\ Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Champagne & Limousines';
+  src: url('../fonts/Champagne\ &\ Limousines/Champagne & Limousines.ttf') format('truetype');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Champagne & Limousines';
+  src: url('../fonts/Champagne\ &\ Limousines/Champagne & Limousines Bold.ttf') format('truetype');
+  font-weight: bold;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 12vh;
+  z-index: 5;
+  background-color: #18342c;
+  border-bottom: rgb(255, 255, 255) 5px solid;
+}
+
+.logo-moto-section {
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.logo {
+  padding-left: 10%;
+  width: 20%;
+  height: 100%;
+  padding-right: 1%;
+}
+
+.logo-moto-section h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  font-family: 'Champagne & Limousines', sans-serif;
+  font-weight: normal;
+  color: #baad6f;
+}
+
+.navbar img {
+  height: 10vh;
+}
+
+.navbar h1, .navbar a {
+  text-align: center;
+  width: 40%;
+  text-decoration: none;
+  color: white;
+  padding: 1%;
+  font-size: 2.5rem;
+  font-family: 'Aftika', sans-serif;
+  font-weight: bold;
+}
+
+.about-us-section {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: row;
+  width: 30%;
+}
+
+.about-us {
+  width: 30%;
+  margin-right: 2%;
+}
+
+.about-us h2 {
+  font-size: 1rem;
+  color: white;
+  text-align: center; 
+  border-radius: 10px;
+  padding: 3%;
+  border: white 1px solid;
+  font-family: 'Bebas', sans-serif;
+  font-weight: normal;
+}
+
+.socials {
+  padding-right: 10%;
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 4%;
+}
+
+.socials img {
+  height: 3.5vh;
+  border: white 1px solid;
+  border-radius: 50%;
+}

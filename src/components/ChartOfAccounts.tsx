@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import "../assets/css/ChartOfAccounts.css";
+import NavBar from "./NavBar";
+import SwitchBar from "./SwitchBar";
 
 interface Account {
   id: number;
@@ -110,6 +112,8 @@ const ChartOfAccounts = () => {
   };
 
   return (
+    <>
+    <NavBar></NavBar>
     <div className="chart-container">
       <h2>Chart of Accounts</h2>
       <ul>
@@ -170,6 +174,8 @@ const ChartOfAccounts = () => {
         <button onClick={addAccount}>➕ Add Account</button>
       </div>
     </div>
+    <SwitchBar />
+    </>
   );
 };
 

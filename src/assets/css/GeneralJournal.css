@@ -5,11 +5,17 @@
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 600px;
+}
+
+.journal-table-section {
+  height: 400px;
+  overflow-y: auto;
 }
 
 h2 {
   text-align: center;
-  color: #2becc2;
+  color: #005744;
   margin-bottom: 20px;
   font-size: 1.5rem;
 }
@@ -68,6 +74,13 @@ tr:hover {
 .add-entry button:hover {
   background: #1fb695;
 }
+
+.indent-text {
+  display: inline-block;
+  text-indent: 30px; /* Adjust as needed */
+}
+
+
 
 @media (max-width: 768px) {
   .journal-container {

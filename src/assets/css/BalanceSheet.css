@@ -1,5 +1,66 @@
 .balance-sheet-container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.balance-sheet-container h3 {
+  color: black;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.balance-sheet-container h1 {
+color: black;
+font-size: 1.8rem;
+margin: 0;
+}
+
+.balance-sheet-container h4 {
+margin: 0;
+padding-bottom: 5%;
+}
+
+.balance-sheet-table {
+  width: 50%;
+}
+
+.category-column {
+  width: 100%;
+}
+
+.balance-sheet-total {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.balance-sheet-total p {
+  width: 50%;
+}
+
+.balance-sheet-total div{
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.category-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.category-table td {
+  width: 33%;
+}
+
+.balnum {
+  text-align: end;
 }

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import "../assets/css/TrialBalance.css";
+import NavBar from "./NavBar";
+import SwitchBar from "./SwitchBar";
 
 interface LedgerEntry {
   id: number;
@@ -71,40 +73,44 @@ const TrialBalance = () => {
   };
 
   return (
-    <div className="trial-balance-container">
-      <h1>{user ? user.name : ""}</h1>
-      <h2>Trial Balance</h2>
-      <p>As of {new Date().toLocaleDateString()}</p>
+    <>
+      <NavBar></NavBar>
+      <div className="trial-balance-container">
+        <h1>{user ? user.name : ""}</h1>
+        <h2>Trial Balance</h2>
+        <p>For the period ending {new Date().toLocaleDateString()}</p>
 
-      <table className="trial-balance-table">
-        <thead>
-          <tr>
-            <th>Account Code</th>
-            <th>Account Title</th>
-            <th>Debit</th>
-            <th>Credit</th>
-          </tr>
-        </thead>
-        <tbody>
-          {trialBalance.map((entry, index) => (
-            <tr key={index}>
-              <td>{entry.account_code}</td>
-              <td>{entry.account_title}</td>
-              <td>{entry.debit.toLocaleString()}</td>
-              <td>{entry.credit.toLocaleString()}</td>
+        <table className="trial-balance-table">
+          <thead>
+            <tr>
+              <th>Account Code</th>
+              <th>Account Title</th>
+              <th>Debit</th>
+              <th>Credit</th>
             </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td><strong>Total</strong></td>
-            <td><strong></strong></td> {/* Empty cell for spacing */}
-            <td><strong>{trialBalance.reduce((sum, entry) => sum + entry.debit, 0).toLocaleString()}</strong></td>
-            <td><strong>{trialBalance.reduce((sum, entry) => sum + entry.credit, 0).toLocaleString()}</strong></td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {trialBalance.map((entry, index) => (
+              <tr key={index}>
+                <td>{entry.account_code}</td>
+                <td>{entry.account_title}</td>
+                <td>{entry.debit.toLocaleString()}</td>
+                <td>{entry.credit.toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td><strong>Total</strong></td>
+              <td><strong></strong></td> {/* Empty cell for spacing */}
+              <td><strong>{trialBalance.reduce((sum, entry) => sum + entry.debit, 0).toLocaleString()}</strong></td>
+              <td><strong>{trialBalance.reduce((sum, entry) => sum + entry.credit, 0).toLocaleString()}</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <SwitchBar />
+    </>
   );
 };
 

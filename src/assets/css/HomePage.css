@@ -43,6 +43,8 @@ html, body {
   width: 100%;
   margin: 0;
   padding: 0;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
 .content {
@@ -57,88 +59,6 @@ html, body {
   height: 100vh;
   z-index: 1;
 }
-
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 12vh;
-  z-index: 5;
-  background-color: #18342c;
-  border-bottom: rgb(255, 255, 255) 5px solid;
-}
-
-.logo-moto-section {
-  width: 30%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.logo-moto-section h2 {
-  margin: 0;
-  padding: 0;
-  font-size: 1rem;
-  font-family: 'Champagne & Limousines', sans-serif;
-  font-weight: normal;
-  color: #baad6f;
-}
-
-.navbar img {
-  height: 10vh;
-}
-
-.navbar h1 {
-  text-align: center;
-  width: 40%;
-  text-decoration: none;
-  color: white;
-  padding: 1%;
-  font-size: 2.5rem;
-  font-family: 'Aftika', sans-serif;
-  font-weight: bold;
-}
-
-.about-us-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  width: 30%;
-}
-
-.about-us {
-  width: 30%;
-  margin-right: 2%;
-}
-
-.about-us h2 {
-  font-size: 1rem;
-  color: white;
-  text-align: center; 
-  border-radius: 10px;
-  padding: 3%;
-  border: white 1px solid;
-  font-family: 'Bebas', sans-serif;
-  font-weight: normal;
-}
-
-.socials {
-  width: 30%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  gap: 4%;
-}
-
-.socials img {
-  height: 3.5vh;
-  border: white 1px solid;
-  border-radius: 50%;
-}
-
 .actual-content-section {
   display: flex;
   flex-direction: column;
@@ -326,4 +246,24 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.welcome-section button {
+  width: 70%;
+  padding: 5%;
+  margin-top: 2%;
+  border: none;
+  background-color: #26a69a;
+  color: white;
+  font-size: 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.welcome-section button:hover {
+  background-color: #1e8e78;
 }
