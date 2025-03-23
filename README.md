@@ -6,11 +6,11 @@ Download this zip and unzip at desired folder
 SETUP:
 open the cmd prompt and use this cmd
 
-"cd "path/to/extract_folder"
+```cd "path/to/extract_folder"```
 
 ones there, run
 
-"npm install"
+```npm install```
 
 wait for the install to be complete
 
@@ -24,7 +24,7 @@ after activation
 
 on the previously open command promt run this command
 
-"npm start"
+```npm start```
 
 this will start your website
 
