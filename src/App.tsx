@@ -8,6 +8,7 @@ import BalanceSheet from "./components/BalanceSheet";
 import IncomeStatement from "./components/IncomeStatement";
 import OwnersEquity from "./components/OwnersEquity";
 import StatementOfCashflow from "./components/CashFlowStatement";
+import AboutUs from "./components/AboutUs";
 import {
   BrowserRouter as Router,
   Routes,
@@ -30,6 +31,7 @@ const App: React.FC = () => {
         <Route path="/IncomeStatement" element={<IncomeStatement />} />
         <Route path="/OwnersEquity" element={<OwnersEquity />} />
         <Route path="/StatementOfCashflow" element={<StatementOfCashflow />} />
+        <Route path="/AboutUs" element={<AboutUs />} />
       </Routes>
     </Router>
   );
