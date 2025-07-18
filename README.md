@@ -36,7 +36,7 @@ This will download and install all required packages.
 
 ### 4. Configure the Environment
 
-Create a `.env` file inside the backend directory with the following content (adjust if needed):
+Create a `.env` file inside the root directory with the following content (adjust if needed):
 
 ```env
 SECRET_KEY=your-very-secret-key
@@ -79,7 +79,6 @@ http://localhost:5173/
 
 ## 💬 Notes
 
-- Make sure your database matches the structure expected by the backend (you may import a `.sql` file if provided).
 - Default port for MySQL in XAMPP is `3306`. If yours is different, match it in `.env`.
 - Ensure `node` and `npm` are installed. You can check with:
   ```bash
