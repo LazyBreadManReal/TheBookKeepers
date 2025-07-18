@@ -69,10 +69,9 @@ const GeneralJournal = () => {
         if (!res.ok) throw new Error("Failed to fetch journal entries");
         const data = await res.json();
     
-        // Adjust transaction_date to ensure correct format
         const adjustedData = data.map(entry => ({
           ...entry,
-          transaction_date: new Date(entry.transaction_date).toISOString().split("T")[0] // Ensures correct date
+          transaction_date: new Date(entry.transaction_date).toISOString().split("T")[0]
         }));
     
         setEntries(adjustedData);
@@ -126,13 +125,13 @@ const GeneralJournal = () => {
           account_title_debit: entryArray[0].account_title,
           account_code_credit: entryArray[1].account_code,
           account_title_credit: entryArray[1].account_title,
-          amount: entryArray[0].debit || entryArray[1].credit, // Assuming debit is in first, credit in second
+          amount: entryArray[0].debit || entryArray[1].credit,
           id_debit: entryArray[0].id,
           id_credit: entryArray[1].id,
         };
       }
-      return null; // Skip incomplete transactions
-    }).filter(Boolean); // Remove null values
+      return null;
+    }).filter(Boolean);
   };
   
   
@@ -154,14 +153,14 @@ const GeneralJournal = () => {
   
     const formattedEntry = {
       transaction_date: newEntry.transaction_date,
-      transaction_key: newEntry.transaction_key, // Ensure this is included
+      transaction_key: newEntry.transaction_key, 
       account_code_debit: Number(newEntry.account_code_debit),
       account_title_debit: newEntry.account_title_debit,
       account_code_credit: Number(newEntry.account_code_credit),
       account_title_credit: newEntry.account_title_credit,
       description: newEntry.description,
       reference_number: newEntry.reference_number || null,
-      amount: Number(newEntry.amount) || 0.0, // Ensure amount is a number
+      amount: Number(newEntry.amount) || 0.0, 
     };
   
     try {
@@ -209,7 +208,7 @@ const GeneralJournal = () => {
     setEditingId(null);
     setNewEntry({
       transaction_date: "",
-      transaction_key: 1, // Ensure a new key is generated
+      transaction_key: 1, 
       account_code_debit: "",
       account_title_debit: "",
       account_code_credit: "",
@@ -248,7 +247,7 @@ const GeneralJournal = () => {
     setEditingId(entry.id);
     setNewEntry({
       ...entry,
-      transaction_date: new Date(entry.transaction_date).toISOString().split("T")[0], // Ensures correct date
+      transaction_date: new Date(entry.transaction_date).toISOString().split("T")[0], 
     });
   };
   

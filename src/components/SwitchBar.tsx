@@ -19,7 +19,7 @@ const SwitchBar: React.FC = () => {
   return (
     <div className="switchBar-bar">
       <button
-        onClick={() => navigate(-1)} // Go to the previous page
+        onClick={() => navigate(-1)}
       >
         {"<"}
       </button>
@@ -34,7 +34,7 @@ const SwitchBar: React.FC = () => {
       ))}
 
       <button
-        onClick={() => navigate(1)} // Go to the next page
+        onClick={() => navigate(1)} 
       >
         {">"}
       </button>

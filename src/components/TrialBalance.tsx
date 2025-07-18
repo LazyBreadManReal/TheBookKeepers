@@ -38,7 +38,7 @@ const TrialBalance = () => {
       .then((data) => {
         console.log("Fetched Data:", data);
         setLedgerEntries(data);
-        generateTrialBalance(data); // Generate the trial balance after data fetch
+        generateTrialBalance(data); 
       })
       .catch((err) => console.error("Error fetching journal entries:", err));
   }, []);
@@ -63,7 +63,6 @@ const TrialBalance = () => {
       }
     });
 
-    // Convert balance object to an array for rendering
     setTrialBalance(Object.entries(balance).map(([accountTitle, amounts]) => ({
       account_code: amounts.account_code,
       account_title: accountTitle,
