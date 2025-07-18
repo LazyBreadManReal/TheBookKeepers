@@ -1,6 +1,6 @@
 # 📚 Bookkeeping Website
 
-A local bookkeeping web app powered by Node.js, MySQL, and XAMPP.
+A bookkeeping site for easy tracking of business income and expenses.
 
 ---
 
