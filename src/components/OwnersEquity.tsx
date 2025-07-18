@@ -61,8 +61,8 @@ const OwnersEquity = () => {
   const netIncome = revenueTotal.totalDebit - expensesTotal.totalCredit;
 
   // Calculate the Total Capital and Drawing
-  const capitalTotal = calculateTotal(capital).totalDebit; // Assuming capital is credited
-  const drawingTotal = calculateTotal(drawing).totalCredit; // Assuming drawing is debited
+  const capitalTotal = calculateTotal(capital).totalDebit; 
+  const drawingTotal = calculateTotal(drawing).totalCredit;
 
   // Calculate Equity End (Capital + Net Income - Drawing)
   const equityEnd = capitalTotal + netIncome - drawingTotal;

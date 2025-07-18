@@ -7,18 +7,19 @@ const path = require('path');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const app = express();
+require("dotenv").config();
 
 app.use(cors());
 app.use(express.json());
 
-const SECRET_KEY = "REPLACE_KEY";
+const SECRET_KEY = process.env.SECRET_KEY;
 const databaseName = "bookkeepingdata"
 
 const db = mysql.createConnection({
-    host: '127.0.0.1',
-    port: "3306",
-    user: 'root',
-    password: '',
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_ROOT,
+    password: process.env.DB_PASSWORD,
 });
 
 const defaultAccounts = [
@@ -60,7 +61,7 @@ const ChartOfAccountsTableFormat = `
     CREATE TABLE IF NOT EXISTS ChartOfAccounts (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT NOT NULL,
-        account_code INT NOT NULL UNIQUE,
+        account_code INT NOT NULL,
         account_title VARCHAR(255) NOT NULL,
         FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
     );
